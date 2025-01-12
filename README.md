@@ -5,4 +5,4 @@
 After cloning the repo, run
 
 ```
-Run npm install
+npm install
