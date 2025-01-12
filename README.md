@@ -1,7 +1,8 @@
 # Hack4Good2025
 
-## To get started
+## Getting started
 
-Pull the repo by using git clone ...
+After cloning the repo, run
 
+```
 Run npm install
