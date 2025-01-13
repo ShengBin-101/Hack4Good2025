@@ -1,0 +1,17 @@
+/* HomePage styles */
+.homepage {
+    background-color: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.homepage h1 {
+    color: #007bff;
+    font-size: 2rem;
+}
+
+.homepage p {
+    color: #555;
+    font-size: 1.2rem;
+}
