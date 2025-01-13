@@ -1,12 +1,14 @@
+@import './Colors.css';
+
 /* HomePage styles */
 .homepage {
-    background-color: #f9f9f9;
+    background-color: var(--color-bg);
     padding: 20px;
     text-align: center;
     font-family: Arial, sans-serif;
 }
 
-.homepage h1 {
+/* .homepage h1 {
     color: #007bff;
     font-size: 2rem;
 }
@@ -14,4 +16,54 @@
 .homepage p {
     color: #555;
     font-size: 1.2rem;
-}
+} */
+
+body {
+    background-color: var(--color-bg);
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;          /* added */
+    justify-content: center; /* added */
+    align-items: center;     /* added */
+    height: 100vh;           /* added */
+  }
+  
+  h1 {
+    color: var(--color-primary);
+  }
+  
+  label {
+    color: var(--color-primary);
+    display: block;
+    margin-top: 10px;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    display: block;
+    border: 1px solid var(--color-secondary);
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 12px;
+    width: 240px;
+  }
+  
+  button[type="submit"] {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px 40px;
+    color: var(--color-accent);
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  p {
+    margin-top: 16px;
+  }
+  
+  span {
+    color: var(--color-primary);
+    text-decoration: underline;
+    cursor: pointer;
+  }
