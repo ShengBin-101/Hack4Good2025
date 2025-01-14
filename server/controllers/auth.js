@@ -26,7 +26,7 @@ export const register = async (req, res) => {
             birthday,
             password: passwordhash,
             userPicturePath,
-            admin,
+            admin: admin || false, // Ensure admin is a boolean
             status: "pending"
         });
 
@@ -61,11 +61,13 @@ export const login = async (req, res) => {
 
         const token = jwt.sign(
             { id: user._id, admin: user.admin },
-            process.env.JWT_SECRET
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } // Optional: set token expiration
         );
-        delete user.password;
-        res.status(200).json({ token, user });
+        const userSafe = { ...user._doc };
+        delete userSafe.password;
+        res.status(200).json({ token, user: userSafe });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-};
+}
