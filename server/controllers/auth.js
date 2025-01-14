@@ -4,7 +4,6 @@ import User from '../models/User.js';
 
 /* REGISTER USER */
 export const register = async (req, res) => {
-    console.log("HAII")
     try {
         const { 
             name, 
@@ -12,6 +11,7 @@ export const register = async (req, res) => {
             birthday, 
             password,
             userPicturePath,
+            voucher,
             admin
          } = req.body;
 
@@ -24,9 +24,8 @@ export const register = async (req, res) => {
             birthday, 
             password: passwordhash,
             userPicturePath,
-            admin
-             //viewedProfile: Math.floor(Math.random() * 1000),
-             //impressions: Math.floor(Math.random() * 1000),
+            admin,
+            voucher
          });
          const savedUser = await newUser.save();
          res.status(201).json(savedUser);

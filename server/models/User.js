@@ -28,6 +28,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    voucher: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     admin: {
       type: Boolean,
       default: false,

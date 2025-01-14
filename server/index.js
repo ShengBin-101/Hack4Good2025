@@ -11,8 +11,10 @@ import { fileURLToPath } from 'url';
 
 // Routes for login
 import authRoutes from './routes/auth.js';
-// For register
+// Routes for register
 import { register } from './controllers/auth.js';
+//Routes for create, update, delete, get all products
+import productRoutes from './routes/product.js';
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -41,14 +43,19 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+
 /*  Routes with Files */
-app.post('/auth/register', upload.single('picture'), register);
+app.post('/auth/register', upload.single('picture'), register); // For Register
 
 /*  Routes */
-app.use('/auth', authRoutes);
+app.use('/auth', authRoutes); // For Login
+app.use('/products', productRoutes); // For create, update, delete, get all products
+
 app.get('/test', (req, res) => {
-  res.send('Server is running');
-});
+    res.send('Server is running');
+  });
+
+
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 6001;
