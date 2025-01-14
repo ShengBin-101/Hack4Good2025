@@ -15,6 +15,8 @@ import authRoutes from './routes/auth.js';
 import { register } from './controllers/auth.js';
 //Routes for create, update, delete, get all products
 import productRoutes from './routes/product.js';
+// For admin
+import adminRoutes from './routes/admin.js';
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -33,10 +35,10 @@ app.use("/assets/images", express.static(path.join(__dirname, "public/images")))
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, "public/assets");
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, file.originalname);
     }
 });
@@ -50,11 +52,11 @@ app.post('/auth/register', upload.single('picture'), register); // For Register
 /*  Routes */
 app.use('/auth', authRoutes); // For Login
 app.use('/products', productRoutes); // For create, update, delete, get all products
+app.use('/admin', adminRoutes);
 
 app.get('/test', (req, res) => {
     res.send('Server is running');
   });
-
 
 
 /* MONGOOSE SETUP */

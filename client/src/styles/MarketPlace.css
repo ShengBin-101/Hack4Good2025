@@ -1,0 +1,103 @@
+@import './Colors.css';
+
+.marketplace-container {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-bg);
+  padding: 20px;
+  text-align: center;
+}
+
+.marketplace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.marketplace-header .logo {
+  height: 40px;
+}
+
+.marketplace-header .search-bar {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid var(--color-secondary);
+  width: 200px;
+}
+
+.marketplace-header .filter-dropdown {
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid var(--color-secondary);
+}
+
+.marketplace-header .view-mode-button,
+.marketplace-header .nav-button,
+.marketplace-header .logout-button {
+  background-color: var(--color-secondary);
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.marketplace-header .view-mode-button:hover,
+.marketplace-header .nav-button:hover,
+.marketplace-header .logout-button:hover {
+  background-color: var(--color-primary);
+}
+
+.marketplace-header .vouchers {
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.marketplace-main {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80vw; /* 80% of the viewport width */
+  height: 70vh; /* 70% of the viewport height */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
+  margin: 0 auto; /* Center the div horizontally */
+}
+
+.marketplace-main h2 {
+  color: var(--color-primary);
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-item {
+  background-color: var(--color-accent);
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-item:hover {
+  background-color: var(--color-secondary);
+}
+
+.marketplace-main.grid .product-item {
+  display: inline-block;
+  width: calc(33.333% - 20px);
+  margin: 10px;
+}
+
+.marketplace-main.list .product-item {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
