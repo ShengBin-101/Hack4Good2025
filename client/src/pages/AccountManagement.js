@@ -69,8 +69,8 @@ const AccountManagement = () => {
 
     return (
         <div className="account-management">
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
             <h1>Account Management</h1>
-            <button onClick={handleLogout}>Logout</button>
             <table>
                 <thead>
                     <tr>

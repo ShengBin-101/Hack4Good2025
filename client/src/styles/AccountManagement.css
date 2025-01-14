@@ -1,6 +1,7 @@
 .account-management {
     padding: 20px;
     font-family: Arial, sans-serif;
+    position: relative;
 }
 
 .account-management h1 {
@@ -55,6 +56,14 @@
 }
 
 .account-management button:last-of-type {
+    background-color: #f44336;
+    color: white;
+}
+
+.logout-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
     background-color: #f44336;
     color: white;
 }
