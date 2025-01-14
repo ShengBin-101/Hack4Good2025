@@ -12,7 +12,8 @@ export const register = async (req, res) => {
             password,
             userPicturePath,
             voucher,
-            admin
+            admin,
+            status,
         } = req.body;
 
         console.log("Request body:", req.body);
@@ -26,9 +27,9 @@ export const register = async (req, res) => {
             birthday,
             password: passwordhash,
             userPicturePath,
+            voucher,
             admin: admin || false, // Ensure admin is a boolean
-            status: "pending",
-            voucher
+            status: "pending"
          });
          console.log("New user:", newUser);
          
