@@ -25,8 +25,9 @@ function HomePage() {
         throw new Error('Login error');
       })
       .then((data) => {
-        console.log(data);
+        console.log('Login Data:', data);
         localStorage.setItem('token', data.token); // Store the token
+        localStorage.setItem('user', JSON.stringify(data.user)); // Store the user info
         if (data.user.admin) {
           navigate('/account-management');
         } else {
