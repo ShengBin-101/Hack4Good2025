@@ -32,6 +32,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    status: {
+      type: String,
+      default: "pending", // "pending", "approved", "rejected"
+    },
   },
   { timestamps: true }
 );

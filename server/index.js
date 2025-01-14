@@ -13,6 +13,8 @@ import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 // For register
 import { register } from './controllers/auth.js';
+// For admin
+import adminRoutes from './routes/admin.js';
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -31,10 +33,10 @@ app.use("/assets/images", express.static(path.join(__dirname, "public/images")))
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
+    destination: function (req, file, cb) {
         cb(null, "public/assets");
     },
-    filename: function(req, file, cb) {
+    filename: function (req, file, cb) {
         cb(null, file.originalname);
     }
 });
@@ -46,8 +48,9 @@ app.post('/auth/register', upload.single('picture'), register);
 
 /*  Routes */
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 app.get('/test', (req, res) => {
-  res.send('Server is running');
+    res.send('Server is running');
 });
 
 /* MONGOOSE SETUP */
