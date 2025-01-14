@@ -69,8 +69,11 @@ const AccountManagement = () => {
 
     return (
         <div className="account-management">
-            <button className="logout-button" onClick={handleLogout}>Logout</button>
-            <h1>Account Management</h1>
+            <header className="admin-header">
+                <h1>Account Management</h1>
+                <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+                <button className="logout-button" onClick={handleLogout}>Logout</button>
+            </header>
             <table>
                 <thead>
                     <tr>
@@ -85,8 +88,8 @@ const AccountManagement = () => {
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>
-                                <button onClick={() => handleApprove(user._id)}>Approve</button>
-                                <button onClick={() => handleReject(user._id)}>Reject</button>
+                                <button className="approve-button" onClick={() => handleApprove(user._id)}>Approve</button>
+                                <button className="reject-button" onClick={() => handleReject(user._id)}>Reject</button>
                             </td>
                         </tr>
                     ))}

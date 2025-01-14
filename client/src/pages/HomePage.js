@@ -29,7 +29,7 @@ function HomePage() {
         localStorage.setItem('token', data.token); // Store the token
         localStorage.setItem('user', JSON.stringify(data.user)); // Store the user info
         if (data.user.admin) {
-          navigate('/account-management');
+          navigate('/admin-dashboard');
         } else {
           navigate('/marketplace');
         }
