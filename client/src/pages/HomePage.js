@@ -5,6 +5,7 @@ import '../styles/HomePage.css';
 function HomePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -18,6 +19,9 @@ function HomePage() {
         if (res.ok) {
           return res.json();
         }
+        if (res.status === 400) {
+          throw new Error('Wrong Login Credentials');
+        }
         throw new Error('Login error');
       })
       .then((data) => {
@@ -29,11 +33,14 @@ function HomePage() {
           navigate('/marketplace');
         }
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        setError(err.message);
+      });
   };
 
   return (
-    <div>
+    <div className="form-container">  
       <h1>Login Page</h1>
       <form onSubmit={handleLogin}>
         <label>Email:</label>
@@ -48,15 +55,22 @@ function HomePage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <div className="button-container">
+          <button type="submit">Login</button>
+        </div>
       </form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
       <p>
         Don’t have an account?{' '}
+        <span style={{ color: 'blue', cursor: 'pointer' }}
+        onClick={() => navigate('/register')}>Register</span>
+      </p>
+      <p>
         <span
           style={{ color: 'blue', cursor: 'pointer' }}
-          onClick={() => navigate('/register')}
+          onClick={() => navigate('/reset-password')}
         >
-          Register
+          Forgot Password?
         </span>
       </p>
     </div>

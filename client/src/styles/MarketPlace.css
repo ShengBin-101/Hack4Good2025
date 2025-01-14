@@ -1,0 +1,64 @@
+@import './Colors.css';
+
+.marketplace-container {
+  font-family: Arial, sans-serif;
+  background-color: var(--color-bg);
+  padding: 20px;
+  text-align: center;
+}
+
+.marketplace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.marketplace-header h1 {
+  margin: 0;
+}
+
+.logout-button {
+  background-color: var(--color-secondary);
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.logout-button:hover {
+  background-color: var(--color-primary);
+}
+
+.marketplace-main {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.marketplace-main h2 {
+  color: var(--color-primary);
+}
+
+.product-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.product-item {
+  background-color: var(--color-accent);
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-item:hover {
+  background-color: var(--color-secondary);
+}

@@ -41,7 +41,7 @@ function RegisterPage() {
     };
 
     return (
-        <div>
+        <div className='form-container'>
             <h1>Register</h1>
             <form onSubmit={handleRegister}>
                 <label>Name:</label>
@@ -74,7 +74,13 @@ function RegisterPage() {
                     value={userPicturePath}
                     onChange={(e) => setUserPicturePath(e.target.value)}
                 />
-                <button type="submit">Register</button>
+                <br />
+                <br />
+                <div className="button-container">
+          <button type="submit">Register</button>
+          <button type="button" onClick={() => navigate('/')}>Back to Login</button>
+        </div>
+                
             </form>
         </div>
     );
