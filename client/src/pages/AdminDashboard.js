@@ -1,0 +1,28 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../styles/AdminDashboard.css';
+
+const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/');
+  };
+
+  return (
+    <div className="admin-dashboard">
+      <header className="admin-header">
+        <h1>Admin Dashboard</h1>
+        <button className="logout-button" onClick={handleLogout}>Logout</button>
+      </header>
+      <main className="admin-main">
+        <button className="nav-button" onClick={() => navigate('/admin-listings')}>Inventory</button>
+        <button className="nav-button" onClick={() => navigate('/account-management')}>Account Management</button>
+      </main>
+    </div>
+  );
+};
+
+export default AdminDashboard;
