@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/AccountManagement.css';
 
 const AccountManagement = () => {
     const [pendingUsers, setPendingUsers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch pending users
@@ -59,9 +61,16 @@ const AccountManagement = () => {
             .catch((err) => console.error(err));
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate('/');
+    };
+
     return (
         <div className="account-management">
             <h1>Account Management</h1>
+            <button onClick={handleLogout}>Logout</button>
             <table>
                 <thead>
                     <tr>
