@@ -75,13 +75,13 @@ function RegisterPage() {
                     onChange={(e) => setUserPicturePath(e.target.value)}
                 />
                 <br />
-                <br />
-                <div className="button-container">
+                <br />                
+            </form>
+            <div className="button-container">
           <button type="submit">Register</button>
           <button type="button" onClick={() => navigate('/')}>Back to Login</button>
         </div>
-                
-            </form>
+
         </div>
     );
 }
