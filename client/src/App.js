@@ -5,8 +5,10 @@ import RegisterPage from './pages/RegisterPage';
 import AccountManagement from './pages/AccountManagement';
 import ResetPassword from './pages/ResetPassword';
 import Marketplace from './pages/Marketplace';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
   return (
     <Router>
       <Routes>
