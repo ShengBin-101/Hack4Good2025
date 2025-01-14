@@ -17,6 +17,8 @@ import { register } from './controllers/auth.js';
 import productRoutes from './routes/product.js';
 // For admin
 import adminRoutes from './routes/admin.js';
+// For create, approval, get all tasks
+import taskRoutes from './routes/task.js'
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -53,6 +55,7 @@ app.post('/auth/register', upload.single('picture'), register); // For Register
 app.use('/auth', authRoutes); // For Login
 app.use('/products', productRoutes); // For create, update, delete, get all products
 app.use('/admin', adminRoutes);
+app.use('/tasks', taskRoutes) // For create, approval, get all tasks
 
 app.get('/test', (req, res) => {
     res.send('Server is running');
