@@ -9,6 +9,15 @@ export const getPendingUsers = async (req, res) => {
     }
 };
 
+export const getExistingUsers = async (req, res) => {
+    try {
+        const existingUsers = await User.find({ status: { $ne: 'pending' } });
+        res.status(200).json(existingUsers);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 export const approveUser = async (req, res) => {
     try {
         const { id } = req.params;

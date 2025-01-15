@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema(
     },
     voucher: {
       type: Number,
-      default: 0,
+      default: 10, // Everyone starts off with 10 Vouchers
       min: 0,
     },
     admin: {

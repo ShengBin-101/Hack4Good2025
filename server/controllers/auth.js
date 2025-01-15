@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 
 /* REGISTER USER */
@@ -11,32 +11,37 @@ export const register = async (req, res) => {
             birthday,
             password,
             userPicturePath,
-            voucher,
-            admin,
-            status,
         } = req.body;
 
-        console.log("Request body:", req.body);
+        // Validate input
+        if (!name || !email || !birthday || !password) {
+            return res.status(400).json({ msg: "All fields except Profile Picture URL are required." });
+        }
 
-        const salt = await bcrypt.genSalt(); // create a salt provided by bcrypt, and this encrypts the password
-        const passwordhash = await bcrypt.hash(password, salt); //hash the password with the salt
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "User with this email already exists." });
+        }
 
+        // Hash the password
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        // Create new user
         const newUser = new User({
             name,
             email,
             birthday,
-            password: passwordhash,
+            password: passwordHash,
             userPicturePath,
-            voucher,
-            admin: admin || false, // Ensure admin is a boolean
-            status: "pending"
-         });
-         console.log("New user:", newUser);
-         
-         const savedUser = await newUser.save();
-         console.log("Saved user:", savedUser);
+            voucher: 10, // Default voucher value
+            admin: false, // Default admin value
+            status: "pending" // Default status
+        });
 
-         res.status(201).json(savedUser);
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser);
     } catch (error) {
         console.error("Error during registration:", error);
         res.status(500).json({ error: error.message });
