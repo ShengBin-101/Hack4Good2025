@@ -9,7 +9,6 @@ const AccountManagement = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch pending users
         const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/pending', {
             headers: {
@@ -30,7 +29,6 @@ const AccountManagement = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch existing users
         const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/existing', {
             headers: {
@@ -51,7 +49,6 @@ const AccountManagement = () => {
     }, []);
 
     const handleApprove = (userId) => {
-        // Approve user
         const token = localStorage.getItem('token');
         fetch(`http://localhost:3001/admin/approve/${userId}`, {
             method: 'PUT',
@@ -68,7 +65,6 @@ const AccountManagement = () => {
     };
 
     const handleReject = (userId) => {
-        // Reject user
         const token = localStorage.getItem('token');
         fetch(`http://localhost:3001/admin/reject/${userId}`, {
             method: 'DELETE',
@@ -80,6 +76,22 @@ const AccountManagement = () => {
             .then((res) => {
                 if (!res.ok) throw new Error('Error rejecting user');
                 setPendingUsers((prev) => prev.filter((user) => user._id !== userId));
+            })
+            .catch((err) => console.error(err));
+    };
+
+    const handleDelete = (userId) => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:3001/admin/delete/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error('Error deleting user');
+                setExistingUsers((prev) => prev.filter((user) => user._id !== userId));
             })
             .catch((err) => console.error(err));
     };
@@ -131,6 +143,7 @@ const AccountManagement = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -139,6 +152,9 @@ const AccountManagement = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.status}</td>
+                                <td>
+                                    <button className="delete-button" onClick={() => handleDelete(user._id)}>Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
