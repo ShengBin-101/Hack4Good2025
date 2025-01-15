@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/AccountManagement.css';
 
 const AccountManagement = () => {
+    const [activeTab, setActiveTab] = useState('pending'); // State to manage active tab
     const [pendingUsers, setPendingUsers] = useState([]);
+    const [existingUsers, setExistingUsers] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch pending users
-        const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
+        const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/pending', {
             headers: {
                 'Content-Type': 'application/json',
@@ -23,6 +25,27 @@ const AccountManagement = () => {
             })
             .then((data) => {
                 setPendingUsers(data);
+            })
+            .catch((err) => console.error(err));
+    }, []);
+
+    useEffect(() => {
+        // Fetch existing users
+        const token = localStorage.getItem('token');
+        fetch('http://localhost:3001/admin/existing', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error('Error fetching existing users');
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setExistingUsers(data);
             })
             .catch((err) => console.error(err));
     }, []);
@@ -74,27 +97,53 @@ const AccountManagement = () => {
                 <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
             </header>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {pendingUsers.map((user) => (
-                        <tr key={user._id}>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
-                            <td>
-                                <button className="approve-button" onClick={() => handleApprove(user._id)}>Approve</button>
-                                <button className="reject-button" onClick={() => handleReject(user._id)}>Reject</button>
-                            </td>
+            <div className="tabs">
+                <button className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`} onClick={() => setActiveTab('pending')}>Users Waiting for Approval</button>
+                <button className={`tab-button ${activeTab === 'existing' ? 'active' : ''}`} onClick={() => setActiveTab('existing')}>Existing Users</button>
+            </div>
+            {activeTab === 'pending' && (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {pendingUsers.map((user) => (
+                            <tr key={user._id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                    <button className="approve-button" onClick={() => handleApprove(user._id)}>Approve</button>
+                                    <button className="reject-button" onClick={() => handleReject(user._id)}>Reject</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+            {activeTab === 'existing' && (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {existingUsers.map((user) => (
+                            <tr key={user._id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>{user.status}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };

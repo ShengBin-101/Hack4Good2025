@@ -48,6 +48,26 @@
     background-color: var(--color-secondary);
 }
 
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0 10px;
+}
+
+.tab-button.active {
+    background-color: var(--color-secondary);
+}
+
 .account-management h1 {
     text-align: center;
     margin-bottom: 20px;

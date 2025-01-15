@@ -5,6 +5,9 @@
   background-color: var(--color-bg);
   padding: 20px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .user-header {
@@ -15,6 +18,8 @@
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
+  width: 100%;
+  max-width: 1200px;
   margin-bottom: 20px;
 }
 
@@ -49,12 +54,27 @@
   background-color: var(--color-primary);
 }
 
+.user-dashboard-main {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .profile-section, .goal-section {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
 }
 
 .profile-section h2, .goal-section h2 {
@@ -87,4 +107,19 @@ button {
 
 button:hover {
   background-color: var(--color-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-header,
+  .user-dashboard-main,
+  .profile-section,
+  .goal-section {
+    width: 90%;
+  }
+
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+  }
 }

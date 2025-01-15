@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/RegisterPage.css';
 
 function RegisterPage() {
     const [name, setName] = useState('');
@@ -7,11 +8,18 @@ function RegisterPage() {
     const [birthday, setBirthday] = useState('');
     const [password, setPassword] = useState('');
     const [userPicturePath, setUserPicturePath] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
-        // For now, just send the form data to the server
+
+        // Validate input fields
+        if (!name || !email || !birthday || !password) {
+            setError('All fields except Profile Picture URL are required.');
+            return;
+        }
+
         fetch('http://localhost:3001/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -21,27 +29,28 @@ function RegisterPage() {
                 birthday,
                 password,
                 userPicturePath,
-                // We'll handle the "approved" status later
             }),
         })
             .then((res) => {
                 if (!res.ok) {
-                    throw new Error('Registration error');
+                    return res.json().then((data) => {
+                        throw new Error(data.msg || 'Registration error');
+                    });
                 }
                 return res.json();
             })
             .then((data) => {
                 console.log(data);
-                // After successful request, go back to home or show a message
-                navigate('/');
+                navigate('/'); // Redirect to login page on successful registration
             })
             .catch((err) => {
                 console.error(err);
+                setError(err.message);
             });
     };
 
     return (
-        <div className='form-container'>
+        <div className="form-container">
             <h1>Register</h1>
             <form onSubmit={handleRegister}>
                 <label>Name:</label>
@@ -68,20 +77,18 @@ function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <label>Profile Picture Path (Optional):</label>
+                <label>Profile Picture URL (Optional):</label>
                 <input
                     type="text"
                     value={userPicturePath}
                     onChange={(e) => setUserPicturePath(e.target.value)}
                 />
-                <br />
-                <br />                
+                <div className="button-container">
+                    <button type="submit">Register</button>
+                    <button type="button" onClick={() => navigate('/')}>Back to Login</button>
+                </div>
             </form>
-            <div className="button-container">
-          <button type="submit">Register</button>
-          <button type="button" onClick={() => navigate('/')}>Back to Login</button>
-        </div>
-
+            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
 }
