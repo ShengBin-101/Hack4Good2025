@@ -3,7 +3,7 @@ import Product from "../models/Product.js";
 /* CREATE PRODUCT */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, quantity, productPicturePath } = req.body;
+    const { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity } = req.body;
 
     if (!productPicturePath) {
       return res.status(400).json({ error: "Product picture path is required." });
@@ -14,6 +14,8 @@ export const createProduct = async (req, res) => {
       description,
       quantity,
       productPicturePath,
+      voucherNeeded,
+      stockQuantity,
     });
 
     const savedProduct = await newProduct.save();
@@ -27,9 +29,9 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, quantity, productPicturePath } = req.body;
+    const { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity } = req.body;
 
-    const updates = { name, description, quantity, productPicturePath };
+    const updates = { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity };
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
       new: true, // Return the updated document

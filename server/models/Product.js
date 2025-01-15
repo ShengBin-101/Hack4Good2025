@@ -12,15 +12,21 @@ const ProductSchema = new mongoose.Schema(
       required: true,
       maxlength: 500, // Optional: Limits the description length
     },
-    quantity: {
+    voucherNeeded: {
       type: Number,
       required: true,
-      min: 0, // Ensures no negative quantity
+      min: 0, // Ensures no negative voucher count
+    },
+    stockQuantity: {
+      type: Number,
+      required: true,
+      min: 0, // Ensures no negative stock quantity
     },
     productPicturePath: {
       type: String,
       required: true,
     },
+
   },
   { timestamps: true }
 );

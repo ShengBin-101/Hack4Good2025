@@ -4,68 +4,87 @@ import '../styles/MarketPlace.css';
 
 const Marketplace = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState('');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
-  const [vouchers, setVouchers] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [orderQuantity, setOrderQuantity] = useState(1);
 
   useEffect(() => {
-    // Fetch user data (vouchers)
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setVouchers(user.vouchers);
-    }
+    // Fetch products
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:3001/products', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error(err));
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    console.log('User logged out');
+    localStorage.removeItem('user');
     navigate('/');
   };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
+  const handleOrderProduct = (product) => {
+    setSelectedProduct(product);
   };
 
-  const handleFilter = (e) => {
-    setFilter(e.target.value);
+  const handleConfirmOrder = () => {
+    // Handle order confirmation logic here
+    console.log(`Ordering ${orderQuantity} of ${selectedProduct.name}`);
+    setSelectedProduct(null);
+    setOrderQuantity(1);
   };
 
-  const toggleViewMode = () => {
-    setViewMode(viewMode === 'grid' ? 'list' : 'grid');
+  const handleCancelOrder = () => {
+    setSelectedProduct(null);
+    setOrderQuantity(1);
   };
 
   return (
     <div className="marketplace-container">
       <header className="marketplace-header">
-        <img src="/path/to/logo.png" alt="Logo" className="logo" />
-        <input
-          type="text"
-          placeholder="Search for items..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="search-bar"
-        />
-        <select value={filter} onChange={handleFilter} className="filter-dropdown">
-          <option value="">All</option>
-          <option value="category1">Category 1</option>
-          <option value="category2">Category 2</option>
-        </select>
-        <button className="view-mode-button" onClick={toggleViewMode}>
-          {viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}
-        </button>
+        <h1>Marketplace</h1>
         <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
-        <p className="vouchers">Vouchers: {vouchers}</p>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
-
       </header>
-      <main className={`marketplace-main ${viewMode}`}>
-        <h2>Products</h2>
-        <ul className="product-list">
-          <li className="product-item">Product 1</li>
-          <li className="product-item">Product 2</li>
-          <li className="product-item">Product 3</li>
-        </ul>
+      <main className="marketplace-main">
+        <section className="products-section">
+          <h2>Products</h2>
+          <ul className="product-list">
+            {products.map((product) => (
+              <li key={product._id} className="product-item">
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p>Vouchers Needed: {product.voucherNeeded}</p>
+                  <p>Stock Quantity: {product.stockQuantity}</p>
+                  <button onClick={() => handleOrderProduct(product)}>Order</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+        {selectedProduct && (
+          <div className="order-popup">
+            <div className="order-popup-content">
+              <h2>Order {selectedProduct.name}</h2>
+              <p>Vouchers needed per item: {selectedProduct.voucherNeeded}</p>
+              <input
+                type="number"
+                min="1"
+                value={orderQuantity}
+                onChange={(e) => setOrderQuantity(e.target.value)}
+              />
+              <p>Total vouchers needed: {orderQuantity * selectedProduct.voucherNeeded}</p>
+              <button onClick={handleConfirmOrder}>Confirm</button>
+              <button onClick={handleCancelOrder}>Cancel</button>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
