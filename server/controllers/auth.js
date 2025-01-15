@@ -53,12 +53,12 @@ export const register = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "hacks4good@gmail.com",
+                user: "hacks4goood@gmail.com",
                 pass: "mvln zxrp rgpl svrm", // TO CHANGE TEMPORARY PASSWORD AND MOVE INTO ENV
             },
         });
 
-        const verifyUrl = `https://your-frontend-domain/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+        const verifyUrl = `localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
 
         // Send OTP email
         await transporter.sendMail({
