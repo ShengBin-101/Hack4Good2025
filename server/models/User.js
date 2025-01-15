@@ -39,8 +39,11 @@ const UserSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "pending", // "pending", "approved", "rejected"
+      default: "pendingOTP", // new default
+      enum: ["pendingOTP", "pending", "approved", "rejected"],
     },
+    otp: { type: String },
+    otpExpiresAt: { type: Date },
   },
   { timestamps: true }
 );

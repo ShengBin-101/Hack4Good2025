@@ -10,6 +10,7 @@ import PastRedemptions from './pages/PastRedemptions';
 import AdminInventory from './pages/AdminInventory';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import VerifyOTPPage from './pages/VerifyOTPPage';
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/past-redemptions" element={<ProtectedRoute><PastRedemptions /></ProtectedRoute>} />
         <Route path="/admin-listings" element={<ProtectedRoute adminOnly={true}><AdminInventory /></ProtectedRoute>} />
         <Route path="/admin-dashboard" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/verify-otp" element={<VerifyOTPPage />} />
       </Routes>
     </Router>
   );

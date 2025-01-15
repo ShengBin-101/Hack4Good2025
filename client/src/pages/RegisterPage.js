@@ -41,7 +41,7 @@ function RegisterPage() {
             })
             .then((data) => {
                 console.log(data);
-                navigate('/'); // Redirect to login page on successful registration
+                navigate(`/verify-otp?userId=${data._id}`);
             })
             .catch((err) => {
                 console.error(err);
