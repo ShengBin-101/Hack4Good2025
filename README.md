@@ -8,6 +8,100 @@ After cloning the repo, run
 npm install
 ```
 
+# Feature Documentation
+
+## Overview
+This document outlines the core features of the application, emphasizing user interaction, admin functionality, and security mechanisms.
+
+---
+
+## Features
+
+### 1. User Registration with OTP Verification
+- **Process**:
+  - New users are created with a status of `pendingOTP`.
+  - An OTP is generated and sent to the user's email for verification.
+  - Users must verify the OTP to transition to `pending` status.
+- **Integration**:
+  - Emails are sent using **Nodemailer**.
+
+### 2. Admin Approval for Users
+- **Process**:
+  - Once OTP verification is successful, users move to `pending` status.
+  - Admins review and approve or reject users.
+- **Security**:
+  - Admin-specific operations require JWT authentication and admin privileges.
+
+### 3. Secure Password Handling
+- **Encryption**:
+  - Passwords are hashed using [bcrypt](https://www.npmjs.com/package/bcrypt) before being stored in the database.
+  - Ensures secure and irreversible password storage.
+
+### 4. JWT Authentication
+- **Process**:
+  - Users receive a JWT upon successful login.
+  - The token includes:
+    - User ID
+    - Admin privileges (if applicable)
+- **Security**:
+  - JWTs are signed with a secret key (`JWT_SECRET`).
+  - Admin operations validate the `admin` field in the token payload.
+
+### 5. Product Management
+- **Features**:
+  - Full CRUD operations (Create, Read, Update, Delete) for products.
+  - Products include:
+    - Name
+    - Description
+    - Voucher requirements
+    - Stock quantity
+    - Image uploads (handled using **Multer**).
+
+### 6. Task Management
+- **User Features**:
+  - Users can submit tasks, including image uploads.
+  - Each task includes:
+    - Task description
+    - Voucher request amount
+    - Completion date
+- **Admin Features**:
+  - Admins can approve or reject tasks.
+  - Approved tasks update the user's voucher balance.
+
+### 7. Transaction Management
+- **User Features**:
+  - Users can exchange vouchers for products.
+  - Transactions track:
+    - Product name
+    - Quantity
+    - Voucher amount deducted
+- **Admin Features**:
+  - Admins can view all transactions for auditing.
+
+### 8. Nodemailer Integration
+- **Use Cases**:
+  - Sends OTP emails during user registration.
+  - Sends password reset links during password recovery.
+- **Configuration**:
+  - Uses Gmail as the email service.
+  - Authentication credentials are securely managed.
+
+---
+
+## Security Highlights
+- **Password Encryption**: Utilizes bcrypt for secure password storage.
+- **JWT Authentication**: Ensures secure access to protected endpoints.
+- **OTP Verification**: Validates user identity during registration.
+- **Role-Based Access Control**: Differentiates between regular users and admins for secure operations.
+
+---
+
+## Additional Notes
+- The application supports auditing via transaction history and task logs.
+- All file uploads are stored in the `public/assets` directory.
+- The modular design of APIs ensures scalability and maintainability.
+
+
 # Security Documentation
 
 ## Overview
