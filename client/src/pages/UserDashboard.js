@@ -17,7 +17,7 @@ const UserDashboard = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
       setProfilePicture(user.profilePicture);
-      setVouchers(user.vouchers);
+      setVouchers(user.voucher || 0); // Fetch and set voucher count
       setGoal(user.goal || 0);
     } else {
       setVouchers(0);
@@ -40,14 +40,14 @@ const UserDashboard = () => {
       .catch((err) => console.error('Error fetching task categories:', err));
   };
 
+  const handleTaskClick = (category) => {
+    navigate('/task-submission', { state: { selectedCategory: category } }); // Pass the category as state
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     navigate('/');
-  };
-
-  const handleTaskClick = (category) => {
-    navigate('/task-submission', { state: { selectedCategory: category } });
   };
 
   return (
@@ -60,7 +60,7 @@ const UserDashboard = () => {
       <div className="profile-section">
         <h2>Profile</h2>
         <img src={profilePicture} alt="Profile" className="profile-picture" />
-        <p>Vouchers: {vouchers}</p>
+        <p>Vouchers: {vouchers}</p> {/* Display voucher count */}
       </div>
       <div className="goal-section">
         <h2>Set Your Goal</h2>
@@ -75,7 +75,7 @@ const UserDashboard = () => {
                 <li
                   key={category._id}
                   className="task-item"
-                  onClick={() => handleTaskClick(category)}
+                  onClick={() => handleTaskClick(category)} // Attach click handler
                   style={{ cursor: 'pointer' }}
                 >
                   <h3>{category.name}</h3>
