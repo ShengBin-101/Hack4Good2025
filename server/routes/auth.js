@@ -1,10 +1,12 @@
 import express from 'express';
-import { login, register, verifyOtp } from "../controllers/auth.js";
+import { login, register, verifyOtp, forgotPassword, resetPassword } from "../controllers/auth.js";
 
 const router = express.Router();
 
 router.post('/register', register);
 router.post("/login", login); // will be prefixed with auth/ so it becomes auth/login later
 router.post('/verify-otp', verifyOtp);
+router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 export default router;

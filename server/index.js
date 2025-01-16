@@ -19,6 +19,8 @@ import productRoutes from './routes/product.js';
 import adminRoutes from './routes/admin.js';
 // For create, approval, get all tasks
 import taskRoutes from './routes/task.js'
+// For task categories
+import taskCategoryRoutes from './routes/taskCategory.js';
 //For create, get all transactions
 import transactionRoutes from './routes/transaction.js'
 
@@ -58,11 +60,10 @@ app.use('/auth', authRoutes); // For Login
 app.use('/products', productRoutes); // For create, update, delete, get all products
 app.use('/admin', adminRoutes);
 app.use('/tasks', taskRoutes) // For create, approval, get all tasks
-app.use('/transactions', transactionRoutes)
 
 app.get('/test', (req, res) => {
     res.send('Server is running');
-  });
+});
 
 
 /* MONGOOSE SETUP */
