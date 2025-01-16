@@ -77,7 +77,7 @@ const TaskCategoryManagement = () => {
             </header>
             <main className="task-category-main">
                 <section className="task-categories-section">
-                    <h2>Task Categories</h2>
+                    <h2>Active Tasks</h2>
                     <ul className="task-category-list">
                         {taskCategories.map((category) => (
                             <li key={category._id} className="task-category-item">
@@ -91,7 +91,7 @@ const TaskCategoryManagement = () => {
                     </ul>
                 </section>
                 <section className="add-task-category-section">
-                    <h2>Add New Task Category</h2>
+                    <h2>Create New Task</h2>
                     <label>
                         <span>Category Name:</span>
                         <input
