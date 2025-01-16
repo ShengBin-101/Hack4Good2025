@@ -58,7 +58,7 @@ export const register = async (req, res) => {
             },
         });
 
-        const verifyUrl = `localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+        const verifyUrl = `http://localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
 
         // Send OTP email
         await transporter.sendMail({
@@ -132,6 +132,63 @@ export const verifyOtp = async (req, res) => {
 
         res.status(200).json({ msg: "OTP verified. Awaiting admin approval." });
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+/* FORGOT PASSWORD */
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ msg: "User not found" });
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' });
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "hacks4goood@gmail.com",
+                pass: "mvln zxrp rgpl svrm",
+            },
+        });
+
+        const resetUrl = `http://localhost:3000/reset-password?userId=${user._id}&token=${token}`;
+
+        await transporter.sendMail({
+            from: '"Your App" <no-reply@yourapp.com>',
+            to: email,
+            subject: "Reset your password",
+            text: `Click the link to reset your password: ${resetUrl}`,
+            html: `<p>Click the link to reset your password: <a href="${resetUrl}">Reset Password</a></p>`,
+        });
+
+        res.status(200).json({ msg: "Reset link sent to your email" });
+    } catch (error) {
+        console.error("Error during forgot password:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { userId, token, password } = req.body;
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (decoded.id !== userId) return res.status(400).json({ msg: "Invalid token" });
+
+        const user = await User.findById(userId);
+        if (!user) return res.status(400).json({ msg: "User not found" });
+
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        user.password = passwordHash;
+        await user.save();
+
+        res.status(200).json({ msg: "Password reset successful" });
+    } catch (error) {
+        console.error("Error during reset password:", error);
         res.status(500).json({ error: error.message });
     }
 };

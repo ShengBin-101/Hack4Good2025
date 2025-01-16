@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import HomePage from './pages/HomePage';
 import RegisterPage from './pages/RegisterPage';
 import AccountManagement from './pages/AccountManagement';
-import ResetPassword from './pages/ResetPassword';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import Marketplace from './pages/Marketplace';
 import UserDashboard from './pages/UserDashboard';
 import PastRedemptions from './pages/PastRedemptions';
@@ -21,7 +22,8 @@ const App = () => {
         <Route path="/" element={user && user.admin ? <Navigate to="/admin-dashboard" /> : <HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/account-management" element={<ProtectedRoute adminOnly={true}><AccountManagement /></ProtectedRoute>} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/marketplace" element={<Marketplace />} />
         <Route path="/user-dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
         <Route path="/past-redemptions" element={<ProtectedRoute><PastRedemptions /></ProtectedRoute>} />
