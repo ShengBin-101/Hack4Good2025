@@ -9,6 +9,7 @@ import {
   approveTask,
   getAllTasks,
   getUserTasks,
+  deleteTask
 } from "../controllers/task.js";
 import { verifyToken, verifyAdmin } from "../middleware/auth.js";
 
@@ -47,5 +48,8 @@ router.get("/", verifyToken, verifyAdmin, getAllTasks);
 
 // User gets their tasks
 router.get("/:userId", verifyToken, getUserTasks);
+
+// Admin deletes a task
+router.delete("/:taskId", verifyToken, verifyAdmin, deleteTask);
 
 export default router;

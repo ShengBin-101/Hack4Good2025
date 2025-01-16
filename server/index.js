@@ -25,6 +25,10 @@ import taskCategoryRoutes from './routes/taskCategory.js';
 import transactionRoutes from './routes/transaction.js'
 // For get user information via userId
 import userRoutes from './routes/user.js'
+// For quests
+import questRoutes from "./routes/quest.js";
+// For quest submissions
+import questSubmissionRoutes from "./routes/questSubmission.js";
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -65,6 +69,8 @@ app.use('/tasks', taskRoutes); // For create, approval, get all tasks
 app.use('/task-categories', taskCategoryRoutes);
 app.use('/transactions', transactionRoutes); // For create, get all transactions
 app.use('/users', userRoutes); // For get user information via userId
+app.use("/quests", questRoutes); // For quests
+app.use("/quest-submissions", questSubmissionRoutes); // For quest submissions
 
 app.get('/test', (req, res) => {
     res.send('Server is running');

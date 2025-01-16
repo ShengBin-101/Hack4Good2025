@@ -62,7 +62,7 @@
   margin: 0 10px;
   cursor: pointer;
   border: none;
-  background-color: #575757;
+  background-color: var(--color-accent);
   border-radius: 5px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -73,6 +73,49 @@
 }
 
 .tab-button:hover {
+  background-color: var(--primary-hover-color); /* Use hover color from Colors.css */
+  color: var(--text-color);
+}
+
+.profile-section h2,
+.goal-section h2,
+.available-tasks-section h2,
+.available-quests-section h2 {
+  color: var(--color-primary);
+  /* Use primary color for section titles */
+}
+
+/* Profile Picture */
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  /* Circular profile picture */
+  margin-bottom: 10px;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="range"] {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--color-secondary);
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Button Styles */
+button {
+  background-color: var(--color-primary);
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
   background-color: var(--primary-hover-color); /* Use hover color from Colors.css */
   color: var(--text-color);
 }
@@ -93,26 +136,38 @@
   border: 3px solid var(--text-color); /* Add a white border around the profile picture */
 }
 
-.tasks-list-container {
-  max-height: 300px;
+.tasks-list-container,
+.quests-list-container {
+  max-height: 200px;
+  /* Scrollable container height */
   overflow-y: auto;
+  /* Enable vertical scrolling */
+  margin-top: 10px;
+  border: 1px solid var(--color-secondary);
+  border-radius: 4px;
+  padding: 10px;
 }
 
-.tasks-list, .transaction-list {
-  list-style-type: none;
+.tasks-list,
+.quests-list {
+  list-style: none;
   padding: 0;
 }
 
-.task-item, .transaction-item {
-  padding: 10px;
+.task-item,
+.transaction-item,
+.quest-item {
   margin-bottom: 10px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: var(--item-background-color);
   color: var(--item-text-color); /* Dark text color for better readability */
 }
 
-.task-item:hover, .transaction-item:hover {
+.task-item:hover,
+.transaction-item:hover,
+.quest-item:hover {
   background-color: var(--item-hover-background-color);
 }
 
@@ -123,4 +178,41 @@
 
 .transaction-item p {
   margin: 5px 0;
+}
+
+.task-item:last-child,
+.quest-item:last-child {
+  border-bottom: none;
+  /* Remove border for the last task */
+}
+
+.task-item h3,
+.quest-item h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.task-item p,
+.quest-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: var(--color-secondary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-header,
+  .user-dashboard-main,
+  .profile-section,
+  .goal-section,
+  .available-tasks-section,
+  .available-quests-section {
+    width: 90%;
+  }
+
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+  }
 }

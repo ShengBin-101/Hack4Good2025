@@ -10,6 +10,8 @@ const UserDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('profile');
+  const [quests, setQuests] = useState([]);
+  const [pendingQuestIds, setPendingQuestIds] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,8 +31,11 @@ const UserDashboard = () => {
 
     setProfilePicture(user.profilePicture);
 
-    fetchTaskCategories();
     fetchUserTransactions();
+    // Fetch task categories and quests
+    fetchTaskCategories();
+    fetchQuests();
+    fetchPendingQuestSubmissions();
   }, []);
 
   const fetchVoucherCountFromLocalStorage = () => {
@@ -70,6 +75,33 @@ const UserDashboard = () => {
       .catch((err) => console.error('Error fetching transactions:', err));
   };
 
+  const fetchQuests = () => {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:3001/quests', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setQuests(data.filter(quest => quest.status === 'available')))
+      .catch((err) => console.error('Error fetching quests:', err));
+  };
+
+  const fetchPendingQuestSubmissions = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/quest-submissions/${user._id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setPendingQuestIds(data.filter(submission => submission.status === 'pending').map(submission => submission.questId._id)))
+      .catch((err) => console.error('Error fetching pending quest submissions:', err));
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -79,8 +111,13 @@ const UserDashboard = () => {
   const handleTaskClick = (category) => {
     navigate('/task-submission', { state: { selectedCategory: category } });
   };
+
   const handleGoalChange = (event) => {
     setGoal(event.target.value);
+  };
+
+  const handleQuestClick = (quest) => {
+    navigate('/quest-submission', { state: { selectedQuest: quest } });
   };
 
   return (
@@ -102,6 +139,12 @@ const UserDashboard = () => {
           onClick={() => setActiveTab('transactionHistory')}
         >
           Transaction History
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'quests' ? 'active' : ''}`}
+          onClick={() => setActiveTab('quests')}
+        >
+          Quests
         </button>
       </div>
       {activeTab === 'profile' && (
@@ -168,6 +211,32 @@ const UserDashboard = () => {
           ) : (
             <p>No transactions found.</p>
           )}
+        </div>
+      )}
+      {activeTab === 'quests' && (
+        <div className="available-quests-section">
+          <h2>Available Quests</h2>
+          <div className="quests-list-container">
+            {quests.length > 0 ? (
+              <ul className="quests-list">
+                {quests.filter(quest => !pendingQuestIds.includes(quest._id)).map((quest) => (
+                  <li
+                    key={quest._id}
+                    className="quest-item"
+                    onClick={() => handleQuestClick(quest)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <h3>{quest.name}</h3>
+                    <p>{quest.description}</p>
+                    <p>Voucher Value: {quest.voucherValue}</p>
+                    <p>Cooldown: {quest.cooldown} minutes</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No quests available at the moment.</p>
+            )}
+          </div>
         </div>
       )}
     </div>
