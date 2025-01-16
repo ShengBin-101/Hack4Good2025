@@ -51,6 +51,8 @@
 .tabs {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
@@ -61,7 +63,6 @@
     color: white;
     cursor: pointer;
     border-radius: 4px;
-    margin: 0 10px;
 }
 
 .tab-button.active {
