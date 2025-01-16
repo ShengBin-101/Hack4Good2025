@@ -78,6 +78,82 @@ export const register = async (req, res) => {
     }
 }
 
+
+/*Register Admin*/
+export const registerAdmin = async (req, res) => {
+ try {
+        const {
+            name,
+            email,
+            birthday,
+            password,
+            userPicturePath,
+        } = req.body;
+
+        // Validate input
+        if (!name || !email || !birthday || !password) {
+            return res.status(400).json({ msg: "All fields except Profile Picture URL are required." });
+        }
+
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ msg: "User with this email already exists." });
+        }
+
+        // Hash the password
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        // Generate OTP and expiration
+        const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
+        const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+        // Create new user
+        const newUser = new User({
+            name,
+            email,
+            birthday,
+            password: passwordHash,
+            userPicturePath,
+            voucher: 0, 
+            admin: true, // is admin value
+            status: "pendingOTP", // Default status
+            otp,
+            otpExpiresAt,
+        });
+
+        const savedUser = await newUser.save();
+
+        // Configure Nodemailer
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "hacks4goood@gmail.com",
+                pass: "mvln zxrp rgpl svrm", // TO CHANGE TEMPORARY PASSWORD AND MOVE INTO ENV
+            },
+        });
+
+        const verifyUrl = `http://localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+
+        // Send OTP email
+        await transporter.sendMail({
+            from: '"Your App" <no-reply@yourapp.com>',
+            to: email,
+            subject: "Verify your account",
+            text: `Your OTP is ${otp}. Link: ${verifyUrl}`,
+            html: `<p>Your OTP is <b>${otp}</b>. Click <a href="${verifyUrl}">here</a> to verify.</p>`,
+        });
+
+        res.status(201).json(savedUser);
+    } catch (error) {
+        console.error("Error during registration:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
 /* LOGIN USER */
 export const login = async (req, res) => {
     try {
