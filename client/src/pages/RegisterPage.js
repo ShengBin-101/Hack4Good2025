@@ -7,11 +7,11 @@ function RegisterPage() {
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState('');
     const [password, setPassword] = useState('');
-    const [userPicturePath, setUserPicturePath] = useState('');
+    const [userPicture, setUserPicture] = useState(null);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
 
         // Validate input fields
@@ -20,33 +20,33 @@ function RegisterPage() {
             return;
         }
 
-        fetch('http://localhost:3001/auth/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name,
-                email,
-                birthday,
-                password,
-                userPicturePath,
-            }),
-        })
-            .then((res) => {
-                if (!res.ok) {
-                    return res.json().then((data) => {
-                        throw new Error(data.msg || 'Registration error');
-                    });
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
-                navigate(`/verify-otp?userId=${data._id}`);
-            })
-            .catch((err) => {
-                console.error(err);
-                setError(err.message);
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('birthday', birthday);
+        formData.append('password', password);
+        if (userPicture) {
+            formData.append('picture', userPicture);
+        }
+
+        try {
+            const response = await fetch('http://localhost:3001/auth/register', {
+                method: 'POST',
+                body: formData,
             });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.msg || 'Registration error');
+            }
+
+            const data = await response.json();
+            console.log(data);
+            navigate('/verify-otp?userId=${data._id}');
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        }
     };
 
     return (
@@ -77,12 +77,16 @@ function RegisterPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <label>Profile Picture URL (Optional):</label>
-                <input
-                    type="text"
-                    value={userPicturePath}
-                    onChange={(e) => setUserPicturePath(e.target.value)}
-                />
+                <label>Profile Picture (Optional):</label>
+                <div className="file-input-container">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        id="file-upload"
+                        onChange={(e) => setUserPicture(e.target.files[0])}
+                        hidden
+                    />
+                </div>
                 <div className="button-container">
                     <button type="submit">Register</button>
                     <button type="button" onClick={() => navigate('/')}>Back to Login</button>

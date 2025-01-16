@@ -5,8 +5,10 @@ import '../styles/AdminInventory.css';
 const AdminInventory = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({ name: '', description: '', productPicturePath: '', voucherNeeded: 0, stockQuantity: 0 });
+  const [newProduct, setNewProduct] = useState({ name: '', description: '', voucherNeeded: 0, stockQuantity: 0 });
+  const [productPicture, setProductPicture] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [editingProductPicture, setEditingProductPicture] = useState(null);
 
   useEffect(() => {
     // Fetch products
@@ -33,26 +35,33 @@ const AdminInventory = () => {
     setNewProduct({ ...newProduct, [name]: value });
   };
 
+  const handlePictureChange = (e) => {
+    setProductPicture(e.target.files[0]);
+  };
+
   const handleAddProduct = () => {
-    // Add new product logic here
     const token = localStorage.getItem('token');
-    const productData = {
-      ...newProduct,
-      productPicturePath: newProduct.productPicturePath || 'default-image-url.jpg' // Set default value if empty
-    };
+    const formData = new FormData();
+    formData.append('name', newProduct.name);
+    formData.append('description', newProduct.description);
+    formData.append('voucherNeeded', newProduct.voucherNeeded);
+    formData.append('stockQuantity', newProduct.stockQuantity);
+    if (productPicture) {
+      formData.append('productPicture', productPicture);
+    }
 
     fetch('http://localhost:3001/products', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(productData),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         setProducts([...products, data]);
-        setNewProduct({ name: '', description: '', productPicturePath: '', voucherNeeded: 0, stockQuantity: 0 });
+        setNewProduct({ name: '', description: '', voucherNeeded: 0, stockQuantity: 0 });
+        setProductPicture(null);
       })
       .catch((err) => console.error(err));
   };
@@ -62,26 +71,33 @@ const AdminInventory = () => {
   };
 
   const handleUpdateProduct = () => {
-    // Update product logic here
     const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('name', editingProduct.name);
+    formData.append('description', editingProduct.description);
+    formData.append('voucherNeeded', editingProduct.voucherNeeded);
+    formData.append('stockQuantity', editingProduct.stockQuantity);
+    if (editingProductPicture) {
+      formData.append('productPicture', editingProductPicture);
+    }
+
     fetch(`http://localhost:3001/products/${editingProduct._id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(editingProduct),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         setProducts(products.map((product) => (product._id === data._id ? data : product)));
         setEditingProduct(null);
+        setEditingProductPicture(null);
       })
       .catch((err) => console.error(err));
   };
 
   const handleDeleteProduct = (productId) => {
-    // Delete product logic here
     const token = localStorage.getItem('token');
     fetch(`http://localhost:3001/products/${productId}`, {
       method: 'DELETE',
@@ -100,6 +116,10 @@ const AdminInventory = () => {
   const handleInputChangeEdit = (e) => {
     const { name, value } = e.target;
     setEditingProduct({ ...editingProduct, [name]: value });
+  };
+
+  const handlePictureChangeEdit = (e) => {
+    setEditingProductPicture(e.target.files[0]);
   };
 
   return (
@@ -174,13 +194,10 @@ const AdminInventory = () => {
                 />
               </label>
               <label>
-                Product Picture URL:
+                Product Picture:
                 <input
-                  type="text"
-                  name="productPicturePath"
-                  value={editingProduct.productPicturePath}
-                  onChange={handleInputChangeEdit}
-                  placeholder="Product Picture URL"
+                  type="file"
+                  onChange={handlePictureChangeEdit}
                 />
               </label>
               <button onClick={handleUpdateProduct}>Update</button>
@@ -231,13 +248,10 @@ const AdminInventory = () => {
             />
           </label>
           <label>
-            Product Picture URL:
+            Product Picture:
             <input
-              type="text"
-              name="productPicturePath"
-              value={newProduct.productPicturePath}
-              onChange={handleInputChange}
-              placeholder="Product Picture URL"
+              type="file"
+              onChange={handlePictureChange}
             />
           </label>
           <button onClick={handleAddProduct}>Add Product</button>
