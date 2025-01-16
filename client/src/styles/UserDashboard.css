@@ -7,7 +7,7 @@
   --primary-hover-color: var(--color-hover);
   --text-color: var(--color-accent);
   --section-background-primary-color: rgba(224, 240, 238, 0.932);
-  --section-background-secondary-color: rgba(221, 234, 255, 0.6);
+  --section-background-secondary-color: #fffecbc1;
   --item-background-color: #ffffff;
   --item-hover-background-color: #f1f1f1;
   --item-text-color: #333;
