@@ -44,38 +44,23 @@ const Marketplace = () => {
   };
 
   const handleConfirmOrder = () => {
-
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    
   
     if (!user || !token) {
       console.error('User not authenticated');
       return;
     }
-    
-    fetch('http://localhost:3001/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        productId: selectedProduct._id,
-        quantity: orderQuantity
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setVoucherCount((prevCount) => prevCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count for non-admin users
-        localStorage.setItem('voucher', voucherCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count in local storage
-        setSelectedProduct(null);
-        setOrderQuantity(1);
-        alert('Order placed successfully!');
-      })
-      .catch((err) => console.error(err));
 
+    if (orderQuantity <= 0) {
+      setErrorMessage('Order quantity must be more than 0.');
+      return;
+    }
 
+    if (orderQuantity > selectedProduct.stockQuantity) {
+      setErrorMessage('Order quantity exceeds available stock.');
+      return;
+    }
 
     const totalVoucherNeeded = selectedProduct.voucherNeeded * orderQuantity;
     if (user.voucher < totalVoucherNeeded) {
@@ -110,6 +95,9 @@ const Marketplace = () => {
         user.voucher -= totalVoucherNeeded;
         localStorage.setItem('user', JSON.stringify(user));
 
+        // Update the voucher count state
+        setVoucherCount(user.voucher);
+
         // Reset the selected product and order quantity
         setSelectedProduct(null);
         setOrderQuantity(1);
@@ -120,7 +108,6 @@ const Marketplace = () => {
       .catch((err) => {
         console.error('Error processing transaction:', err);
       });
-
   };
 
   const handleCancelOrder = () => {
