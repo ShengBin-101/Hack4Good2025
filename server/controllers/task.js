@@ -1,14 +1,33 @@
 import Task from "../models/Task.js";
 import User from "../models/User.js";
+import multer from 'multer';
+import path from 'path';
+
+/* FILE STORAGE */
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/assets");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage });
 
 /* CREATE TASK */
 export const createTask = async (req, res) => {
   try {
     const { userId, taskDescription, voucherRequest, dateCompleted } = req.body;
+    const taskPicturePath = req.file ? req.file.path : null;
+
+    if (!taskPicturePath) {
+      return res.status(400).json({ msg: "Task picture is required." });
+    }
 
     const user = await User.findById(userId);
     if (!user) {
-        return res.status(404).json({ msg: "User not found." });
+      return res.status(404).json({ msg: "User not found." });
     }
 
     const newTask = new Task({
@@ -16,6 +35,8 @@ export const createTask = async (req, res) => {
       taskDescription,
       voucherRequest,
       dateCompleted,
+      taskPicturePath,
+      status: "pending",
     });
 
     const savedTask = await newTask.save();
@@ -27,49 +48,43 @@ export const createTask = async (req, res) => {
 
 /* APPROVE TASK */
 export const approveTask = async (req, res) => {
-    try {
-      const { taskId } = req.params; // The ID of the task to approve/reject
-      const { approval } = req.body; // Whether the task is approved (true) or rejected (false)
-  
-      // Find the task by ID
-      const task = await Task.findById(taskId);
-  
-      if (!task) {
-        return res.status(404).json({ msg: "Task not found." });
-      }
-  
-      // Check if the task has already been processed
-      if (task.approval || task.rejected) {
-        return res.status(400).json({ msg: "Task has already been screened for approval/rejection." });
-      }
-  
-      // Update task based on approval status
-      if (approval) {
-        task.approval = true;
-        const user = await User.findById(task.userId);
-        if (!user) {
-          return res.status(404).json({ msg: "User not found." });
-        }
-  
-        // Add voucher to user's balance
-        user.voucher += task.voucherRequest;
-        await user.save();
-      } else {
-        task.rejected = true;
-      }
-  
-      await task.save();
-  
-      // Respond with the updated task
-      res.status(200).json({
-        msg: `Task has been ${approval ? "approved" : "rejected"}.`,
-        task,
-      });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const { taskId } = req.params;
+    const { approval } = req.body;
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ msg: "Task not found." });
     }
-  };
-  
+
+    if (task.status !== "pending") {
+      return res.status(400).json({ msg: "Task has already been processed." });
+    }
+
+    if (approval) {
+      task.status = "approved";
+      const user = await User.findById(task.userId);
+      if (!user) {
+        return res.status(404).json({ msg: "User not found." });
+      }
+
+      user.voucher += task.voucherRequest;
+      await user.save();
+    } else {
+      task.status = "rejected";
+    }
+
+    await task.save();
+
+    res.status(200).json({
+      msg: `Task has been ${approval ? "approved" : "rejected"}.`,
+      task,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 /* GET ALL TASKS (Admin) */
 export const getAllTasks = async (req, res) => {

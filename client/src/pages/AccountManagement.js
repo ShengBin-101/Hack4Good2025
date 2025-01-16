@@ -8,7 +8,7 @@ const AccountManagement = () => {
     const [existingUsers, setExistingUsers] = useState([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
+    const fetchPendingUsers = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/pending', {
             headers: {
@@ -26,9 +26,10 @@ const AccountManagement = () => {
                 setPendingUsers(data);
             })
             .catch((err) => console.error(err));
-    }, []);
+    };
 
-    useEffect(() => {
+
+    const fetchExistingUsers = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/existing', {
             headers: {
@@ -46,6 +47,11 @@ const AccountManagement = () => {
                 setExistingUsers(data);
             })
             .catch((err) => console.error(err));
+    };
+
+    useEffect(() => {
+        fetchPendingUsers();
+        fetchExistingUsers();
     }, []);
 
     const handleApprove = (userId) => {
@@ -59,7 +65,7 @@ const AccountManagement = () => {
         })
             .then((res) => {
                 if (!res.ok) throw new Error('Error approving user');
-                setPendingUsers((prev) => prev.filter((user) => user._id !== userId));
+                fetchPendingUsers();
             })
             .catch((err) => console.error(err));
     };
@@ -75,7 +81,7 @@ const AccountManagement = () => {
         })
             .then((res) => {
                 if (!res.ok) throw new Error('Error rejecting user');
-                setPendingUsers((prev) => prev.filter((user) => user._id !== userId));
+                fetchPendingUsers();
             })
             .catch((err) => console.error(err));
     };

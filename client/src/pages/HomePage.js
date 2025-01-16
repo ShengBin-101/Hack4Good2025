@@ -40,8 +40,12 @@ function HomePage() {
       });
   };
 
+  const handleForgotPassword = () => {
+    navigate('/forgot-password');
+  };
+
   return (
-    <div className="form-container">  
+    <div className="form-container">
       <h1>Login Page</h1>
       <form onSubmit={handleLogin}>
         <label>Email:</label>
@@ -64,12 +68,12 @@ function HomePage() {
       <p>
         Don’t have an account?{' '}
         <span style={{ color: 'blue', cursor: 'pointer' }}
-        onClick={() => navigate('/register')}>Register</span>
+          onClick={() => navigate('/register')}>Register</span>
       </p>
       <p>
         <span
           style={{ color: 'blue', cursor: 'pointer' }}
-          onClick={() => navigate('/reset-password')}
+          onClick={handleForgotPassword}
         >
           Forgot Password?
         </span>
