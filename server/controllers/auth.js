@@ -58,7 +58,7 @@ export const register = async (req, res) => {
             },
         });
 
-        const verifyUrl = `localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+        const verifyUrl = `http://localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
 
         // Send OTP email
         await transporter.sendMail({
