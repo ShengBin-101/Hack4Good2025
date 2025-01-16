@@ -21,6 +21,7 @@ const AdminDashboard = () => {
         <button className="nav-button" onClick={() => navigate('/admin-listings')}>Inventory</button>
         <button className="nav-button" onClick={() => navigate('/account-management')}>Account Management</button>
         <button className="nav-button" onClick={() => navigate('/task-category-management')}>Task Category Management</button>
+        <button className="nav-button" onClick={() => navigate('/admin-task-management')}>Task Approval</button>
       </main>
     </div>
   );

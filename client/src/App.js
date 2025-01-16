@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import VerifyOTPPage from './pages/VerifyOTPPage';
 import TaskCategoryManagement from './pages/TaskCategoryManagement';
 import TaskSubmission from './pages/TaskSubmissionPage';
+import ViewTasksPage from './pages/ViewTasksPage';
+import AdminTaskManagement from './pages/AdminTaskManagement';
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -34,6 +36,8 @@ const App = () => {
         <Route path="/verify-otp" element={<VerifyOTPPage />} />
         <Route path="/task-category-management" element={<ProtectedRoute adminOnly={true}><TaskCategoryManagement /></ProtectedRoute>} />
         <Route path="/task-submission" element={<ProtectedRoute><TaskSubmission /></ProtectedRoute>} />
+        <Route path="/view-tasks" element={<ProtectedRoute><ViewTasksPage /></ProtectedRoute>} />
+        <Route path="/admin-task-management" element={<ProtectedRoute adminOnly={true}><AdminTaskManagement /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

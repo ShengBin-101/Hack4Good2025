@@ -46,7 +46,7 @@ const Marketplace = () => {
   const handleConfirmOrder = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-  
+
     if (!user || !token) {
       console.error('User not authenticated');
       return;
@@ -130,6 +130,7 @@ const Marketplace = () => {
         <h1>Marketplace</h1>
         <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
         <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
+        <button className="nav-button" onClick={() => navigate('/view-tasks')}>View Tasks</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
         <p>Voucher Count: {voucherCount}</p> {/* Display voucher count */}
       </header>

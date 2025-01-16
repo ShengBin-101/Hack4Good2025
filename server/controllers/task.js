@@ -49,7 +49,6 @@ export const createTask = async (req, res) => {
   }
 };
 
-
 /* APPROVE TASK */
 export const approveTask = async (req, res) => {
   try {
@@ -75,16 +74,34 @@ export const approveTask = async (req, res) => {
 
       user.voucher += task.voucherRequest;
       await user.save();
+      await task.save();
     } else {
-      task.status = "rejected";
+      await Task.findByIdAndDelete(taskId);
     }
-
-    await task.save();
 
     res.status(200).json({
       msg: `Task has been ${approval ? "approved" : "rejected"}.`,
       task,
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+/* DELETE TASK */
+export const deleteTask = async (req, res) => {
+  try {
+    const { taskId } = req.params;
+
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      return res.status(404).json({ msg: "Task not found." });
+    }
+
+    await Task.findByIdAndDelete(taskId);
+
+    res.status(200).json({ msg: "Task has been deleted." });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
