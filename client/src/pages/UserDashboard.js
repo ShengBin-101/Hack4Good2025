@@ -17,7 +17,7 @@ const UserDashboard = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
       setProfilePicture(user.profilePicture);
-      setVouchers(user.vouchers);
+      setVouchers(user.voucher || 0); // Fetch and set voucher count
       setGoal(user.goal || 0);
     } else {
       setVouchers(0);
@@ -40,6 +40,9 @@ const UserDashboard = () => {
       .catch((err) => console.error('Error fetching task categories:', err));
   };
 
+  const handleTaskClick = (category) => {
+    navigate('/task-submission', { state: { selectedCategory: category } }); // Pass the category as state
+
   const fetchUserTransactions = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
@@ -60,10 +63,6 @@ const UserDashboard = () => {
     navigate('/');
   };
 
-  const handleTaskClick = (category) => {
-    navigate('/task-submission', { state: { selectedCategory: category } });
-  };
-
   return (
     <div className="user-dashboard">
       <header className="user-header">
@@ -71,6 +70,30 @@ const UserDashboard = () => {
         <button className="nav-button" onClick={() => navigate('/marketplace')}>Back to Marketplace</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
+      <div className="profile-section">
+        <h2>Profile</h2>
+        <img src={profilePicture} alt="Profile" className="profile-picture" />
+        <p>Vouchers: {vouchers}</p> {/* Display voucher count */}
+      </div>
+      <div className="goal-section">
+        <h2>Set Your Goal</h2>
+        <p>Vouchers needed to reach goal: {Math.max(0, goal - vouchers)}</p>
+      </div>
+      <div className="available-tasks-section">
+        <h2>Available Task Categories</h2>
+        <div className="tasks-list-container">
+          {taskCategories.length > 0 ? (
+            <ul className="tasks-list">
+              {taskCategories.map((category) => (
+                <li
+                  key={category._id}
+                  className="task-item"
+                  onClick={() => handleTaskClick(category)} // Attach click handler
+                  style={{ cursor: 'pointer' }}
+                >
+                  <h3>{category.name}</h3>
+                  <p>{category.description}</p>
+                  <p>Voucher Value: {category.voucherValue}</p>
       <div className="tabs">
         <button
           className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
