@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/HomePage.css';
+import icon from '../assets/logo.jpg'; // Import the image
 
 function HomePage() {
   const [email, setEmail] = useState('');
@@ -45,39 +46,42 @@ function HomePage() {
   };
 
   return (
-    <div className="form-container">
-      <h1>Login Page</h1>
-      <form onSubmit={handleLogin}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="button-container">
-          <button type="submit">Login</button>
-        </div>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>
-        Don’t have an account?{' '}
-        <span style={{ color: 'blue', cursor: 'pointer' }}
-          onClick={() => navigate('/register')}>Register</span>
-      </p>
-      <p>
-        <span
-          style={{ color: 'blue', cursor: 'pointer' }}
-          onClick={handleForgotPassword}
-        >
-          Forgot Password?
-        </span>
-      </p>
+    <div className="homepage">
+      <img src={icon} alt="Icon" className="icon" /> {/* Add the icon */}
+      <div className="form-container">
+        <h1>Minimart</h1>
+        <form onSubmit={handleLogin}>
+          <label>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="button-container">
+            <button type="submit">Login</button>
+          </div>
+        </form>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <p>
+          Don’t have an account?{' '}
+          <span style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={() => navigate('/register')}>Register</span>
+        </p>
+        <p>
+          <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={handleForgotPassword}
+          >
+            Forgot Password?
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
