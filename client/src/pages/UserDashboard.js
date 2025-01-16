@@ -77,6 +77,9 @@ const UserDashboard = () => {
   const handleTaskClick = (category) => {
     navigate('/task-submission', { state: { selectedCategory: category } });
   };
+  const handleGoalChange = (event) => {
+    setGoal(event.target.value);
+  };
 
   return (
     <div className="user-dashboard">
@@ -109,6 +112,15 @@ const UserDashboard = () => {
           <div className="goal-section">
             <h2>Set Your Goal</h2>
             <p>Vouchers needed to reach goal: {Math.max(0, goal - vouchers)}</p>
+            <input
+              type="range"
+              min="0"
+              max="1000"
+              value={goal}
+              onChange={handleGoalChange}
+              className="goal-slider"
+            />
+            <p>Goal: {goal} vouchers</p>
           </div>
           <div className="available-tasks-section">
             <h2>Available Task Categories</h2>
