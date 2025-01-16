@@ -1,157 +1,126 @@
+/* Define CSS variables scoped to the user-dashboard class */
+
 @import './Colors.css';
 
-/* General Styles for User Dashboard */
 .user-dashboard {
-  font-family: Arial, sans-serif;
-  background-color: var(--color-bg); /* Background color from Colors.css */
+  --primary-color: var(--color-primary);
+  --primary-hover-color: var(--color-hover);
+  --text-color: var(--color-accent);
+  --section-background-primary-color: rgba(224, 240, 238, 0.932);
+  --section-background-secondary-color: rgba(221, 234, 255, 0.6);
+  --item-background-color: #ffffff;
+  --item-hover-background-color: #f1f1f1;
+  --item-text-color: #333;
+  --color-bg: var(--color-bg);
+  --color-accent: var(--color-accent);
+
   padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 15px;
+  min-height: 100vh; /* Ensure the background covers the full viewport height */
+  color: var(--text-color);
+  background-color: var(--section-background-primary-color);
 }
 
-/* Header Section */
+.user-dashboard h1 {
+  color: var(--text-color);
+}
+
 .user-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
   background-color: var(--color-primary);
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 20px;
-}
-
-.user-header h1 {
-  margin: 0;
 }
 
 .nav-button, .logout-button {
-  background-color: var(--color-secondary);
-  border: none;
   padding: 10px 20px;
-  color: white;
+  margin: 5px;
   cursor: pointer;
-  border-radius: 4px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--color-secondary);
+  color: var(--text-color);
+  transition: background-color 0.3s ease;
 }
 
 .nav-button:hover, .logout-button:hover {
-  background-color: var(--color-primary);
+  background-color: var(--primary-hover-color); /* Use hover color from Colors.css */
 }
 
-/* Main Container */
-.user-dashboard-main {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for elevation */
-  width: 100%;
-  max-width: 1200px;
+.tabs {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Profile and Goal Sections */
-.profile-section, .goal-section, .available-tasks-section {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
   margin-bottom: 20px;
-  width: 100%;
-  max-width: 600px;
-  text-align: left;
 }
 
-.profile-section h2, .goal-section h2, .available-tasks-section h2 {
-  color: var(--color-primary); /* Use primary color for section titles */
-}
-
-/* Profile Picture */
-.profile-picture {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%; /* Circular profile picture */
-  margin-bottom: 10px;
-}
-
-/* Inputs */
-input[type="text"], input[type="range"] {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid var(--color-secondary);
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-/* Button Styles */
-button {
-  background-color: var(--color-primary);
-  border: none;
+.tab-button {
   padding: 10px 20px;
-  color: white;
+  margin: 0 10px;
   cursor: pointer;
-  border-radius: 4px;
+  border: none;
+  background-color: #575757;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-button:hover {
-  background-color: var(--color-secondary);
+.tab-button.active {
+  background-color: var(--color-primary);
+  color: var(--text-color);
 }
 
-/* Available Tasks Section */
+.tab-button:hover {
+  background-color: var(--primary-hover-color); /* Use hover color from Colors.css */
+  color: var(--text-color);
+}
+
+.profile-section, .goal-section, .available-tasks-section, .transaction-history-section {
+  margin-bottom: 20px;
+  background-color: var(--section-background-secondary-color); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid var(--text-color); /* Add a white border around the profile picture */
+}
+
 .tasks-list-container {
-  max-height: 200px; /* Scrollable container height */
-  overflow-y: auto; /* Enable vertical scrolling */
-  margin-top: 10px;
-  border: 1px solid var(--color-secondary);
-  border-radius: 4px;
-  padding: 10px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.tasks-list {
-  list-style: none;
+.tasks-list, .transaction-list {
+  list-style-type: none;
   padding: 0;
-  margin: 0;
 }
 
-.task-item {
-  margin-bottom: 10px;
+.task-item, .transaction-item {
   padding: 10px;
-  border-bottom: 1px solid var(--color-secondary);
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: var(--item-background-color);
+  color: var(--item-text-color); /* Dark text color for better readability */
 }
 
-.task-item:last-child {
-  border-bottom: none; /* Remove border for the last task */
+.task-item:hover, .transaction-item:hover {
+  background-color: var(--item-hover-background-color);
 }
 
-.task-item h3 {
-  margin: 0;
-  font-size: 16px;
-  color: var(--color-primary);
+.transaction-history-section {
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.task-item p {
+.transaction-item p {
   margin: 5px 0;
-  font-size: 14px;
-  color: var(--color-secondary);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .user-header,
-  .user-dashboard-main,
-  .profile-section,
-  .goal-section,
-  .available-tasks-section {
-    width: 90%; 
-  }
-
-  .profile-picture {
-    width: 80px;
-    height: 80px; 
-  }
 }
