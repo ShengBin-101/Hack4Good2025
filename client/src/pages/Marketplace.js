@@ -6,6 +6,7 @@ const Marketplace = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderQuantity, setOrderQuantity] = useState(1);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,15 +31,63 @@ const Marketplace = () => {
   };
 
   const handleConfirmOrder = () => {
-    // Handle order confirmation logic here
-    console.log(`Ordering ${orderQuantity} of ${selectedProduct.name}`);
-    setSelectedProduct(null);
-    setOrderQuantity(1);
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+  
+    if (!user || !token) {
+      console.error('User not authenticated');
+      return;
+    }
+
+    const totalVoucherNeeded = selectedProduct.voucherNeeded * orderQuantity;
+    if (user.voucher < totalVoucherNeeded) {
+      setErrorMessage('Not enough vouchers for this purchase.');
+      return;
+    }
+
+    const transactionData = {
+      userId: user._id,
+      productName: selectedProduct.name,
+      productQuantity: orderQuantity,
+      dateTransaction: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+      timeTransaction: new Date().toISOString().split('T')[1].split('.')[0], // Current time in HH:MM:SS format
+    };
+
+    fetch('http://localhost:3001/transactions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(transactionData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          console.error('Transaction error:', data.error);
+          return;
+        }
+
+        // Update the user's voucher balance in local storage
+        user.voucher -= totalVoucherNeeded;
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Reset the selected product and order quantity
+        setSelectedProduct(null);
+        setOrderQuantity(1);
+        setErrorMessage('');
+
+        console.log('Transaction successful:', data);
+      })
+      .catch((err) => {
+        console.error('Error processing transaction:', err);
+      });
   };
 
   const handleCancelOrder = () => {
     setSelectedProduct(null);
     setOrderQuantity(1);
+    setErrorMessage('');
   };
 
   const handleLogout = () => {
@@ -85,8 +134,11 @@ const Marketplace = () => {
                 max={selectedProduct.stockQuantity}
               />
             </label>
-            <button onClick={handleConfirmOrder}>Confirm Order</button>
-            <button onClick={handleCancelOrder}>Cancel</button>
+            <div className='button-container'>
+              <button onClick={handleConfirmOrder}>Confirm Order</button>
+              <button onClick={handleCancelOrder}>Cancel</button>
+            </div>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
           </section>
         )}
       </main>
