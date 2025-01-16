@@ -12,6 +12,7 @@ import AdminInventory from './pages/AdminInventory';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import VerifyOTPPage from './pages/VerifyOTPPage';
+import TaskCategoryManagement from './pages/TaskCategoryManagement';
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -30,6 +31,7 @@ const App = () => {
         <Route path="/admin-listings" element={<ProtectedRoute adminOnly={true}><AdminInventory /></ProtectedRoute>} />
         <Route path="/admin-dashboard" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
         <Route path="/verify-otp" element={<VerifyOTPPage />} />
+        <Route path="/task-category-management" element={<ProtectedRoute adminOnly={true}><TaskCategoryManagement /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

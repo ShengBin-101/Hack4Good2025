@@ -1,0 +1,142 @@
+@import './Colors.css';
+
+.task-category-management {
+    font-family: Arial, sans-serif;
+    background-color: var(--color-bg);
+    padding: 20px;
+    text-align: center;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.admin-header h1 {
+    margin: 0;
+}
+
+.nav-button {
+    background-color: var(--color-secondary);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.nav-button:hover {
+    background-color: var(--color-primary);
+}
+
+.logout-button {
+    background-color: var(--color-secondary);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.logout-button:hover {
+    background-color: var(--color-primary);
+}
+
+.task-category-main {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80vw;
+    /* 80% of the viewport width */
+    height: 70vh;
+    /* 70% of the viewport height */
+    overflow-y: auto;
+    /* Add vertical scroll if content overflows */
+    margin: 0 auto;
+    /* Center the div horizontally */
+}
+
+.task-category-main h2 {
+    color: var(--color-primary);
+}
+
+.task-categories-section {
+    margin-bottom: 20px;
+}
+
+.task-category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-accent);
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.task-category-item:hover {
+    background-color: var(--color-secondary);
+}
+
+.task-category-info {
+    text-align: left;
+    flex-grow: 1;
+}
+
+.add-task-category-section {
+    margin-top: 20px;
+}
+
+.add-task-category-section label {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+    text-align: left;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.add-task-category-section label span {
+    width: 150px;
+    /* Fixed width for labels */
+}
+
+.add-task-category-section input[type="text"],
+.add-task-category-section input[type="number"] {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--color-secondary);
+    width: calc(100% - 160px);
+    /* Adjust width to account for label width and margin */
+    margin-left: 10px;
+}
+
+.add-task-category-section button {
+    background-color: var(--color-primary);
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 20px;
+}
+
+.add-task-category-section button:hover {
+    background-color: var(--color-secondary);
+}
