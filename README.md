@@ -8,6 +8,141 @@ After cloning the repo, run
 npm install
 ```
 
+# Security Documentation
+
+## Overview
+This document details the security mechanisms implemented in the application, including password encryption, JSON Web Tokens (JWT), and OTP verification.
+
+---
+
+## Environment Variables
+Ensure the following environment variables are set:
+- `MONGO_URL`: MongoDB connection string.
+- `PORT`: Port number the server listens on.
+- `JWT_SECRET`: Secret key used for signing JWT tokens.
+
+Example:
+```env
+MONGO_URL='mongodb+srv://username:password@cluster.mongodb.net/dbname'
+PORT=3001
+JWT_SECRET='yourSuperSecretKey'
+```
+
+---
+
+## Password Encryption
+Passwords are securely hashed using **bcrypt** before being stored in the database.
+
+### Example
+**Registration Flow**:
+1. The user provides a plaintext password during registration.
+2. The password is hashed using bcrypt:
+    ```javascript
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    ```
+3. The hashed password is stored in the database.
+
+---
+
+## JSON Web Tokens (JWT)
+JWTs are used for authentication and authorization. Tokens are signed with the `JWT_SECRET` key.
+
+### Token Verification
+**Middleware**:
+- `verifyToken`: Verifies the token in the `Authorization` header.
+    ```javascript
+    const token = req.header("Authorization");
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
+    ```
+
+- `verifyAdmin`: Ensures the authenticated user has admin privileges.
+    ```javascript
+    if (!req.user || !req.user.admin) {
+        return res.status(403).json({ msg: "Admin access required." });
+    }
+    ```
+
+---
+
+## OTP (One-Time Password)
+OTP is used for account verification. OTPs are generated, stored temporarily, and sent via email.
+
+### OTP Generation
+1. Generate a 6-digit random number:
+    ```javascript
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    ```
+2. Store the OTP and its expiration time in the database:
+    ```javascript
+    const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // Expires in 15 minutes
+    ```
+
+### OTP Verification
+1. Compare the provided OTP with the stored OTP.
+2. Check if the OTP has expired:
+    ```javascript
+    if (new Date() > user.otpExpiresAt) {
+        return res.status(400).json({ msg: "OTP expired." });
+    }
+    ```
+
+### Email Delivery
+OTPs are sent to the user's email address using Nodemailer:
+```javascript
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: "your_email@gmail.com",
+        pass: "your_email_password",
+    },
+});
+await transporter.sendMail({
+    from: '"Your App" <no-reply@yourapp.com>',
+    to: email,
+    subject: "Verify your account",
+    text: `Your OTP is ${otp}`,
+    html: `<p>Your OTP is <b>${otp}</b></p>`,
+});
+```
+
+---
+
+## Forgot Password Flow
+1. Generate a temporary reset token:
+    ```javascript
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    ```
+2. Send the reset token via email.
+3. Verify the token and reset the password.
+
+---
+
+## Examples
+
+### Token-Based Authorization
+**Request Header**:
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Error Responses
+- **403 Access Denied**:
+    ```json
+    {
+        "error": "Access Denied!"
+    }
+    ```
+
+- **500 Internal Server Error**:
+    ```json
+    {
+        "error": "Error details here."
+    }
+    ```
+
+
 # Admin API Documentation
 
 ## Base URL
