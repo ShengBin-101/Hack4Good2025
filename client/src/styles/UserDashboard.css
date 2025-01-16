@@ -1,8 +1,9 @@
 @import './Colors.css';
 
+/* General Styles for User Dashboard */
 .user-dashboard {
   font-family: Arial, sans-serif;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg); /* Background color from Colors.css */
   padding: 20px;
   text-align: center;
   display: flex;
@@ -10,6 +11,7 @@
   align-items: center;
 }
 
+/* Header Section */
 .user-header {
   display: flex;
   justify-content: space-between;
@@ -27,7 +29,7 @@
   margin: 0;
 }
 
-.nav-button {
+.nav-button, .logout-button {
   background-color: var(--color-secondary);
   border: none;
   padding: 10px 20px;
@@ -36,29 +38,16 @@
   border-radius: 4px;
 }
 
-.nav-button:hover {
+.nav-button:hover, .logout-button:hover {
   background-color: var(--color-primary);
 }
 
-.logout-button {
-  background-color: var(--color-secondary);
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-left: 10px;
-}
-
-.logout-button:hover {
-  background-color: var(--color-primary);
-}
-
+/* Main Container */
 .user-dashboard-main {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow for elevation */
   width: 100%;
   max-width: 1200px;
   display: flex;
@@ -66,7 +55,8 @@
   align-items: center;
 }
 
-.profile-section, .goal-section {
+/* Profile and Goal Sections */
+.profile-section, .goal-section, .available-tasks-section {
   background-color: white;
   padding: 20px;
   border-radius: 8px;
@@ -77,17 +67,19 @@
   text-align: left;
 }
 
-.profile-section h2, .goal-section h2 {
-  color: var(--color-primary);
+.profile-section h2, .goal-section h2, .available-tasks-section h2 {
+  color: var(--color-primary); /* Use primary color for section titles */
 }
 
+/* Profile Picture */
 .profile-picture {
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 50%; /* Circular profile picture */
   margin-bottom: 10px;
 }
 
+/* Inputs */
 input[type="text"], input[type="range"] {
   padding: 10px;
   border-radius: 4px;
@@ -96,6 +88,7 @@ input[type="text"], input[type="range"] {
   margin-bottom: 10px;
 }
 
+/* Button Styles */
 button {
   background-color: var(--color-primary);
   border: none;
@@ -109,17 +102,56 @@ button:hover {
   background-color: var(--color-secondary);
 }
 
+/* Available Tasks Section */
+.tasks-list-container {
+  max-height: 200px; /* Scrollable container height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  margin-top: 10px;
+  border: 1px solid var(--color-secondary);
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.tasks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+.task-item:last-child {
+  border-bottom: none; /* Remove border for the last task */
+}
+
+.task-item h3 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.task-item p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: var(--color-secondary);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .user-header,
   .user-dashboard-main,
   .profile-section,
-  .goal-section {
-    width: 90%;
+  .goal-section,
+  .available-tasks-section {
+    width: 90%; 
   }
 
   .profile-picture {
     width: 80px;
-    height: 80px;
+    height: 80px; 
   }
 }
