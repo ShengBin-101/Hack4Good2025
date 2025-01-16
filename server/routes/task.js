@@ -1,20 +1,21 @@
 import express from "express";
+import fs from "fs";
+import path from "path";
+import multer from "multer";
+import { fileURLToPath } from "url";
+
 import {
   createTask,
   approveTask,
   getAllTasks,
-  getUserTasks
+  getUserTasks,
 } from "../controllers/task.js";
 import { verifyToken, verifyAdmin } from "../middleware/auth.js";
-import fs from 'fs';
-import path from 'path';
-import multer from 'multer';
-import { fileURLToPath } from 'url';
 
-// Ensure the directory exists
+// Ensure the directory for assets exists
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const assetsDir = path.join(__dirname, '..', 'public', 'assets');
+const assetsDir = path.join(__dirname, "..", "public", "assets");
 if (!fs.existsSync(assetsDir)) {
   fs.mkdirSync(assetsDir, { recursive: true });
 }
@@ -22,20 +23,21 @@ if (!fs.existsSync(assetsDir)) {
 /* FILE STORAGE */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, assetsDir);
+    cb(null, assetsDir); // Store files in 'public/assets'
   },
   filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  }
+    cb(null, file.originalname); // Save files with their original names
+  },
 });
 
 const upload = multer({ storage });
 
+/* ROUTER SETUP */
 const router = express.Router();
 
 /* ROUTES */
-// User creates a task
-router.post("/", verifyToken, upload.single('picture'), createTask);
+// User creates a task with a picture
+router.post("/", verifyToken, upload.single("picture"), createTask);
 
 // Admin approves/rejects a task
 router.put("/:taskId/approve", verifyToken, verifyAdmin, approveTask);
