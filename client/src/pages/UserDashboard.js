@@ -8,6 +8,7 @@ const UserDashboard = () => {
   const [goal, setGoal] = useState(0);
   const [taskCategories, setTaskCategories] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('profile');
   const navigate = useNavigate();
 
@@ -16,9 +17,10 @@ const UserDashboard = () => {
 
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-      
+      setProfilePicture(user.profilePicture);
       setVoucherCount(user.vouchers);
       setGoal(user.goal || 0);
+      setUserName(user.name); // Set the user's name
     } else {
       setVoucherCount(0);
     }
@@ -107,6 +109,7 @@ const UserDashboard = () => {
           <div className="profile-section">
             <h2>Profile</h2>
             <img src={profilePicture} alt="Profile" className="profile-picture" />
+            <p>Name: {userName}</p> {/* Display the user's name */}
             <p>Vouchers: {vouchers}</p>
           </div>
           <div className="goal-section">
