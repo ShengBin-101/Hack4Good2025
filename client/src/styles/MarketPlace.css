@@ -22,6 +22,14 @@
   margin: 0;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
 .nav-button {
   background-color: var(--color-secondary);
   border: none;
