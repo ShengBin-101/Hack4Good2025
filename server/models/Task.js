@@ -21,16 +21,15 @@ const TaskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    approval: {
-      type: Boolean,
+    taskPicturePath: {
+      type: String,
       required: true,
-      default: false, // Default value for approval
     },
-    rejected: {
-        type: Boolean,
-        required: true,
-        default: false, // Default value for rejected
-    }
+    status: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "approved", "rejected"],
+    },
   },
   { timestamps: true } // Automatically adds createdAt and updatedAt fields
 );

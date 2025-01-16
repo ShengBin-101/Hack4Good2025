@@ -28,6 +28,7 @@ const AccountManagement = () => {
             .catch((err) => console.error(err));
     };
 
+
     const fetchExistingUsers = () => {
         const token = localStorage.getItem('token');
         fetch('http://localhost:3001/admin/existing', {
@@ -85,6 +86,22 @@ const AccountManagement = () => {
             .catch((err) => console.error(err));
     };
 
+    const handleDelete = (userId) => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:3001/admin/delete/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error('Error deleting user');
+                setExistingUsers((prev) => prev.filter((user) => user._id !== userId));
+            })
+            .catch((err) => console.error(err));
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -132,6 +149,7 @@ const AccountManagement = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,6 +158,9 @@ const AccountManagement = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.status}</td>
+                                <td>
+                                    <button className="delete-button" onClick={() => handleDelete(user._id)}>Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
