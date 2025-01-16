@@ -30,7 +30,7 @@ const ResetPasswordPage = () => {
                 if (data.msg && !data.error) {
                     setMessage(data.msg);
                     setError('');
-                    navigate('/login');
+                    navigate('/');
                 } else {
                     setError(data.msg || 'Error resetting password');
                     setMessage('');
