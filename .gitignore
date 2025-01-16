@@ -13,3 +13,6 @@
 # env files (can opt-in for committing if needed)
 .env*
 
+# uploaded images
+server/public/assets/*
+

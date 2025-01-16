@@ -5,6 +5,6 @@ import { createTaskCategory, getTaskCategories } from '../controllers/taskCatego
 const router = express.Router();
 
 router.post('/', verifyToken, verifyAdmin, createTaskCategory);
-router.get('/', verifyToken, verifyAdmin, getTaskCategories);
+router.get('/', verifyToken, getTaskCategories);
 
 export default router;
