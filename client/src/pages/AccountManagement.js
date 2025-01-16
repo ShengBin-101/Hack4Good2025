@@ -148,7 +148,12 @@ const AccountManagement = () => {
             .then((data) => {
                 setMessage('Admin registered successfully');
                 setError('');
-                setViewMode('users');
+                // Clear form fields
+                setName('');
+                setEmail('');
+                setBirthday('');
+                setPassword('');
+                setUserPicturePath('');
                 fetchExistingUsers();
             })
             .catch((err) => {
