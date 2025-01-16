@@ -16,6 +16,9 @@ import TaskCategoryManagement from './pages/TaskCategoryManagement';
 import TaskSubmission from './pages/TaskSubmissionPage';
 import ViewTasksPage from './pages/ViewTasksPage';
 import AdminTaskManagement from './pages/AdminTaskManagement';
+import QuestManagementPage from './pages/QuestManagementPage';
+import QuestApprovalPage from './pages/QuestApprovalPage';
+import QuestSubmissionPage from './pages/QuestSubmissionPage';
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -38,6 +41,9 @@ const App = () => {
         <Route path="/task-submission" element={<ProtectedRoute><TaskSubmission /></ProtectedRoute>} />
         <Route path="/view-tasks" element={<ProtectedRoute><ViewTasksPage /></ProtectedRoute>} />
         <Route path="/admin-task-management" element={<ProtectedRoute adminOnly={true}><AdminTaskManagement /></ProtectedRoute>} />
+        <Route path="/quest-management" element={<ProtectedRoute adminOnly={true}><QuestManagementPage /></ProtectedRoute>} />
+        <Route path="/quest-approval" element={<ProtectedRoute adminOnly={true}><QuestApprovalPage /></ProtectedRoute>} />
+        <Route path="/quest-submission" element={<ProtectedRoute><QuestSubmissionPage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
