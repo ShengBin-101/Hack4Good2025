@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStore } from '@fortawesome/free-solid-svg-icons';
 import '../styles/MarketPlace.css';
 
 const Marketplace = () => {
@@ -35,21 +37,18 @@ const Marketplace = () => {
   const handleConfirmOrder = () => {
     // Handle order confirmation logic here
     console.log(`Ordering ${orderQuantity} of ${selectedProduct.name}`);
-    setSelectedProduct(null);
-    setOrderQuantity(1);
-  };
-
-  const handleCancelOrder = () => {
-    setSelectedProduct(null);
-    setOrderQuantity(1);
   };
 
   return (
     <div className="marketplace-container">
       <header className="marketplace-header">
-        <h1>Marketplace</h1>
-        <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
-        <button className="logout-button" onClick={handleLogout}>Logout</button>
+        <h1>
+          <FontAwesomeIcon icon={faStore} /> Marketplace
+        </h1>
+        <div className="header-buttons">
+          <button className="nav-button" onClick={() => navigate('/admin-orders')}>View Orders</button>
+          <button className="logout-button" onClick={handleLogout}>Logout</button>
+        </div>
       </header>
       <main className="marketplace-main">
         <section className="products-section">
@@ -60,7 +59,7 @@ const Marketplace = () => {
                 <div className="product-info">
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
-                  <p>Vouchers Needed: {product.voucherNeeded}</p>
+                  <p>Voucher Needed: {product.voucherNeeded}</p>
                   <p>Stock Quantity: {product.stockQuantity}</p>
                   <button onClick={() => handleOrderProduct(product)}>Order</button>
                 </div>
@@ -72,16 +71,17 @@ const Marketplace = () => {
           <div className="order-popup">
             <div className="order-popup-content">
               <h2>Order {selectedProduct.name}</h2>
-              <p>Vouchers needed per item: {selectedProduct.voucherNeeded}</p>
-              <input
-                type="number"
-                min="1"
-                value={orderQuantity}
-                onChange={(e) => setOrderQuantity(e.target.value)}
-              />
-              <p>Total vouchers needed: {orderQuantity * selectedProduct.voucherNeeded}</p>
-              <button onClick={handleConfirmOrder}>Confirm</button>
-              <button onClick={handleCancelOrder}>Cancel</button>
+              <label>
+                Quantity:
+                <input
+                  type="number"
+                  value={orderQuantity}
+                  onChange={(e) => setOrderQuantity(e.target.value)}
+                  min="1"
+                />
+              </label>
+              <button onClick={handleConfirmOrder}>Confirm Order</button>
+              <button onClick={() => setSelectedProduct(null)}>Cancel</button>
             </div>
           </div>
         )}
