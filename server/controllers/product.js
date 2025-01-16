@@ -3,17 +3,18 @@ import Product from "../models/Product.js";
 /* CREATE PRODUCT */
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity } = req.body;
+    const { name, description, voucherNeeded, stockQuantity } = req.body;
+    const productPicturePath = req.file ? req.file.filename : null; // Get file path from Multer
 
     if (!productPicturePath) {
-      return res.status(400).json({ error: "Product picture path is required." });
+      return res.status(400).json({ error: "Product picture is required." });
     }
 
+    // Create new product
     const newProduct = new Product({
       name,
       description,
-      quantity,
-      productPicturePath,
+      productPicturePath, // Save the filename
       voucherNeeded,
       stockQuantity,
     });
@@ -29,9 +30,16 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity } = req.body;
+    const { name, description, voucherNeeded, stockQuantity } = req.body;
+    const productPicturePath = req.file ? req.file.filename : undefined; // Check if new file is uploaded
 
-    const updates = { name, description, quantity, productPicturePath, voucherNeeded, stockQuantity };
+    const updates = {
+      ...(name && { name }),
+      ...(description && { description }),
+      ...(voucherNeeded && { voucherNeeded }),
+      ...(stockQuantity && { stockQuantity }),
+      ...(productPicturePath && { productPicturePath }), // Include the picture path if a new file is uploaded
+    };
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
       new: true, // Return the updated document
@@ -46,6 +54,7 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 /* DELETE PRODUCT */
 export const deleteProduct = async (req, res) => {

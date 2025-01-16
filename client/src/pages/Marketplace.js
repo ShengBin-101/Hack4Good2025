@@ -7,6 +7,8 @@ const Marketplace = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderQuantity, setOrderQuantity] = useState(1);
   const [voucherCount, setVoucherCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,32 +44,76 @@ const Marketplace = () => {
   };
 
   const handleConfirmOrder = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/orders', {
+  
+    if (!user || !token) {
+      console.error('User not authenticated');
+      return;
+    }
+
+    if (orderQuantity <= 0) {
+      setErrorMessage('Order quantity must be more than 0.');
+      return;
+    }
+
+    if (orderQuantity > selectedProduct.stockQuantity) {
+      setErrorMessage('Order quantity exceeds available stock.');
+      return;
+    }
+
+    const totalVoucherNeeded = selectedProduct.voucherNeeded * orderQuantity;
+    if (user.voucher < totalVoucherNeeded) {
+      setErrorMessage('Not enough vouchers for this purchase.');
+      return;
+    }
+
+    const transactionData = {
+      userId: user._id,
+      productName: selectedProduct.name,
+      productQuantity: orderQuantity,
+      dateTransaction: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+      timeTransaction: new Date().toISOString().split('T')[1].split('.')[0], // Current time in HH:MM:SS format
+    };
+
+    fetch('http://localhost:3001/transactions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        productId: selectedProduct._id,
-        quantity: orderQuantity
-      })
+      body: JSON.stringify(transactionData),
     })
       .then((res) => res.json())
       .then((data) => {
-        setVoucherCount((prevCount) => prevCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count for non-admin users
-        localStorage.setItem('voucher', voucherCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count in local storage
+        if (data.error) {
+          console.error('Transaction error:', data.error);
+          return;
+        }
+
+        // Update the user's voucher balance in local storage
+        user.voucher -= totalVoucherNeeded;
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Update the voucher count state
+        setVoucherCount(user.voucher);
+
+        // Reset the selected product and order quantity
         setSelectedProduct(null);
         setOrderQuantity(1);
-        alert('Order placed successfully!');
+        setErrorMessage('');
+
+        console.log('Transaction successful:', data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error('Error processing transaction:', err);
+      });
   };
 
   const handleCancelOrder = () => {
     setSelectedProduct(null);
     setOrderQuantity(1);
+    setErrorMessage('');
   };
 
   const handleLogout = () => {
@@ -117,8 +163,11 @@ const Marketplace = () => {
                 max={selectedProduct.stockQuantity}
               />
             </label>
-            <button onClick={handleConfirmOrder}>Confirm Order</button>
-            <button onClick={handleCancelOrder}>Cancel</button>
+            <div className='button-container'>
+              <button onClick={handleConfirmOrder}>Confirm Order</button>
+              <button onClick={handleCancelOrder}>Cancel</button>
+            </div>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
           </section>
         )}
       </main>
