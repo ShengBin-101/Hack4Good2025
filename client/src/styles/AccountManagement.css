@@ -6,6 +6,7 @@
     position: relative;
 }
 
+
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -111,6 +112,14 @@
     cursor: pointer;
 }
 
+table tbody tr {
+    background-color: #f2f2f2; /* Light grey for rows */
+    color: #333; /* Dark text for readability */
+  }
+
+.form-container {
+    margin: auto;
+}
 .account-management button:hover {
     opacity: 0.8;
 }

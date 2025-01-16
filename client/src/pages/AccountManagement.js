@@ -224,6 +224,7 @@ const AccountManagement = () => {
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Type</th>
                             <th>Email</th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -233,6 +234,7 @@ const AccountManagement = () => {
                         {existingUsers.map((user) => (
                             <tr key={user._id}>
                                 <td>{user.name}</td>
+                                <td>{user.admin ? 'Admin' : 'User'}</td> {/* Display Admin or User */}
                                 <td>{user.email}</td>
                                 <td>{user.status}</td>
                                 <td>
