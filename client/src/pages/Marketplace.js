@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/MarketPlace.css';
 
@@ -6,11 +6,14 @@ const Marketplace = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [orderQuantity, setOrderQuantity] = useState(1);
+  const [voucherCount, setVoucherCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
+    fetchVoucherCountFromLocalStorage();
   }, []);
 
   const fetchProducts = () => {
@@ -26,18 +29,53 @@ const Marketplace = () => {
       .catch((err) => console.error(err));
   };
 
+  const fetchVoucherCountFromLocalStorage = () => {
+    const user = localStorage.getItem('user'); // Retrieve user object
+    if (user) {
+      const parsedUser = JSON.parse(user); // Parse it to JSON
+      setVoucherCount(parsedUser.voucher || 0); // Set voucher count, default to 0
+    } else {
+      setVoucherCount(0); // Default to 0 if no user found
+    }
+  };
+
   const handleOrderProduct = (product) => {
     setSelectedProduct(product);
   };
 
   const handleConfirmOrder = () => {
+
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
+    
   
     if (!user || !token) {
       console.error('User not authenticated');
       return;
     }
+    
+    fetch('http://localhost:3001/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        productId: selectedProduct._id,
+        quantity: orderQuantity
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setVoucherCount((prevCount) => prevCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count for non-admin users
+        localStorage.setItem('voucher', voucherCount - selectedProduct.voucherNeeded * orderQuantity); // Update voucher count in local storage
+        setSelectedProduct(null);
+        setOrderQuantity(1);
+        alert('Order placed successfully!');
+      })
+      .catch((err) => console.error(err));
+
+
 
     const totalVoucherNeeded = selectedProduct.voucherNeeded * orderQuantity;
     if (user.voucher < totalVoucherNeeded) {
@@ -82,6 +120,7 @@ const Marketplace = () => {
       .catch((err) => {
         console.error('Error processing transaction:', err);
       });
+
   };
 
   const handleCancelOrder = () => {
@@ -93,6 +132,8 @@ const Marketplace = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('email');
+    localStorage.removeItem('voucher');
     navigate('/');
   };
 
@@ -103,6 +144,7 @@ const Marketplace = () => {
         <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
         <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
+        <p>Voucher Count: {voucherCount}</p> {/* Display voucher count */}
       </header>
       <main className="marketplace-main">
         <section className="products-section">
