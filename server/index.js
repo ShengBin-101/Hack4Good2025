@@ -59,7 +59,9 @@ app.post('/auth/register', upload.single('picture'), register); // For Register
 app.use('/auth', authRoutes); // For Login
 app.use('/products', productRoutes); // For create, update, delete, get all products
 app.use('/admin', adminRoutes);
-app.use('/tasks', taskRoutes) // For create, approval, get all tasks
+app.use('/tasks', taskRoutes); // For create, approval, get all tasks
+app.use('/task-categories', taskCategoryRoutes);
+app.use('/transactions', transactionRoutes); // For create, get all transactions
 
 app.get('/test', (req, res) => {
     res.send('Server is running');
