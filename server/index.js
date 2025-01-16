@@ -21,8 +21,10 @@ import adminRoutes from './routes/admin.js';
 import taskRoutes from './routes/task.js'
 // For task categories
 import taskCategoryRoutes from './routes/taskCategory.js';
-//For create, get all transactions
+// For create, get all transactions
 import transactionRoutes from './routes/transaction.js'
+// For get user information via userId
+import userRoutes from './routes/user.js'
 
 /* CONFIGURATION */
 const __filename = fileURLToPath(import.meta.url);
@@ -37,7 +39,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
-app.use("/assets/images", express.static(path.join(__dirname, "public/images")));
+app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
@@ -62,6 +64,7 @@ app.use('/admin', adminRoutes);
 app.use('/tasks', taskRoutes); // For create, approval, get all tasks
 app.use('/task-categories', taskCategoryRoutes);
 app.use('/transactions', transactionRoutes); // For create, get all transactions
+app.use('/users', userRoutes); // For get user information via userId
 
 app.get('/test', (req, res) => {
     res.send('Server is running');

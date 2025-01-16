@@ -10,8 +10,7 @@ export const register = async (req, res) => {
             name,
             email,
             birthday,
-            password,
-            userPicturePath,
+            password
         } = req.body;
 
         // Validate input
@@ -32,6 +31,9 @@ export const register = async (req, res) => {
         // Generate OTP and expiration
         const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
         const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+        // Get the picture path from the file uploaded
+        const userPicturePath = req.file ? req.file.filename : null;
 
         // Create new user
         const newUser = new User({

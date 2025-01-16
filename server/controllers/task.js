@@ -19,32 +19,36 @@ const upload = multer({ storage });
 export const createTask = async (req, res) => {
   try {
     const { userId, taskDescription, voucherRequest, dateCompleted } = req.body;
-    const taskPicturePath = req.file ? req.file.path : null;
+    const taskPicturePath = req.file ? req.file.filename : null; // Only save the filename
 
+    // Validate input
     if (!taskPicturePath) {
       return res.status(400).json({ msg: "Task picture is required." });
     }
 
+    // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found." });
     }
 
+    // Create a new task
     const newTask = new Task({
       userId,
       taskDescription,
       voucherRequest,
       dateCompleted,
       taskPicturePath,
-      status: "pending",
+      status: "pending", // Default status
     });
 
-    const savedTask = await newTask.save();
-    res.status(201).json(savedTask);
+    const savedTask = await newTask.save(); // Save task to the database
+    res.status(201).json(savedTask); // Respond with the saved task
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 /* APPROVE TASK */
 export const approveTask = async (req, res) => {
