@@ -244,8 +244,9 @@ const UserDashboard = () => {
         <div className="profile-container">
           <div className="profile-section">
             <h2>Profile</h2>
-            <img src={profilePicture} alt="Profile" className="profile-picture" /> 
-            {/* TODO: Render profile picture  */}
+            {profilePicture && (
+              <img src={profilePicture} alt="Profile" className="profile-picture" />
+            )}
             <p>Name: {userName}</p> {/* Display the user's name */}
             <p>Vouchers: {vouchers}</p>
           </div>
@@ -324,7 +325,7 @@ const UserDashboard = () => {
                   {pendingQuests.map((submission) => (
                     <li key={submission._id} className="quest-item">
                       <div className="quest-submission-info">
-                        <h3>{submission.questId.name}</h3>
+                        <h3>{submission.questId?.name}</h3>
                         <p>Status: {submission.status}</p>
                         {submission.proofImagePath && (
                           <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
@@ -347,7 +348,7 @@ const UserDashboard = () => {
                   {approvedQuests.map((submission) => (
                     <li key={submission._id} className="quest-item">
                       <div className="quest-submission-info">
-                        <h3>{submission.questId.name}</h3>
+                        <h3>{submission.questId?.name}</h3>
                         <p>Status: {submission.status}</p>
                         {submission.proofImagePath && (
                           <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
