@@ -60,7 +60,7 @@ export const register = async (req, res) => {
             },
         });
 
-        const verifyUrl = `http://localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+        const verifyUrl = `${process.env.FRONTEND_URL}/verify-otp?userId=${savedUser._id}&otp=${otp}`;
 
         // Send OTP email
         await transporter.sendMail({
@@ -134,7 +134,7 @@ export const registerAdmin = async (req, res) => {
             },
         });
 
-        const verifyUrl = `http://localhost:3000/verify-otp?userId=${savedUser._id}&otp=${otp}`;
+        const verifyUrl = `${process.env.FRONTEND_URL}/verify-otp?userId=${savedUser._id}&otp=${otp}`;
 
         // Send OTP email
         await transporter.sendMail({
@@ -231,7 +231,7 @@ export const forgotPassword = async (req, res) => {
             },
         });
 
-        const resetUrl = `http://localhost:3000/reset-password?userId=${user._id}&token=${token}`;
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?userId=${user._id}&token=${token}`;
 
         await transporter.sendMail({
             from: '"Your App" <no-reply@yourapp.com>',
