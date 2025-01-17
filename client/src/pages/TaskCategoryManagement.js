@@ -62,6 +62,22 @@ const TaskCategoryManagement = () => {
             .catch((err) => console.error(err));
     };
 
+    const handleDeleteCategory = (categoryId) => {
+        const token = localStorage.getItem('token');
+        fetch(`http://localhost:3001/task-categories/${categoryId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then((res) => {
+                if (!res.ok) throw new Error('Error deleting category');
+                setTaskCategories(taskCategories.filter(category => category._id !== categoryId));
+            })
+            .catch((err) => console.error(err));
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -86,6 +102,7 @@ const TaskCategoryManagement = () => {
                                     <p>{category.description}</p>
                                     <p>Voucher Value: {category.voucherValue}</p>
                                 </div>
+                                <button className="delete-button" onClick={() => handleDeleteCategory(category._id)}>Delete</button>
                             </li>
                         ))}
                     </ul>
