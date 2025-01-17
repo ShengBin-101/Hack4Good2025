@@ -1,5 +1,9 @@
 # Hack4Good2025
 
+## Deployed using Vercel
+
+https://hack4good2025-frontend.vercel.app/
+
 ## Getting started
 
 After cloning the repo, run
@@ -85,6 +89,7 @@ This document outlines the core features of the application, emphasizing user in
 - **Configuration**:
   - Uses Gmail as the email service.
   - Authentication credentials are securely managed.
+  - Sends email to users once their orders have been approved by admin. (Suited for larger items and preorders)
 
 ---
 
