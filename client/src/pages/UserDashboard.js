@@ -193,13 +193,6 @@ const UserDashboard = () => {
       .catch((err) => console.error('Error deleting quest submission:', err));
   };
 
-  const updateVoucherCount = (newVoucherCount) => {
-    setVoucherCount(newVoucherCount);
-    const user = JSON.parse(localStorage.getItem('user'));
-    user.voucher = newVoucherCount;
-    localStorage.setItem('user', JSON.stringify(user));
-  };
-
   return (
     <div className="user-dashboard">
       <header className="user-header">
