@@ -19,3 +19,18 @@ export const getQuests = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const deleteQuest = async (req, res) => {
+  try {
+    const { questId } = req.params;
+
+    const deletedQuest = await Quest.findByIdAndDelete(questId);
+    if (!deletedQuest) {
+      return res.status(404).json({ msg: "Quest not found." });
+    }
+
+    res.status(200).json({ msg: "Quest has been deleted." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

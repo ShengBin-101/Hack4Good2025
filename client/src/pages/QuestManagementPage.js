@@ -65,6 +65,22 @@ const QuestManagementPage = () => {
       .catch((err) => console.error(err));
   };
 
+  const handleDeleteQuest = (questId) => {
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/quests/${questId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('Error deleting quest');
+        setQuests(quests.filter((quest) => quest._id !== questId));
+      })
+      .catch((err) => console.error(err));
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -92,6 +108,7 @@ const QuestManagementPage = () => {
                   <p>Cooldown: {quest.cooldown} minutes</p>
                   <p>Status: {quest.status}</p>
                 </div>
+                <button className="delete-button" onClick={() => handleDeleteQuest(quest._id)}>Delete</button>
               </li>
             ))}
           </ul>

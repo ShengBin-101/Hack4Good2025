@@ -9,6 +9,7 @@ const AdminInventory = () => {
   const [productPicture, setProductPicture] = useState(null);
   const [editingProduct, setEditingProduct] = useState(null);
   const [editingProductPicture, setEditingProductPicture] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     // Fetch products
@@ -39,7 +40,20 @@ const AdminInventory = () => {
     setProductPicture(e.target.files[0]);
   };
 
-  const handleAddProduct = () => {
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+
+    // Validate input fields
+    if (!newProduct.name.trim() || !newProduct.description.trim()) {
+      setError('Product name and description are required.');
+      return;
+    }
+
+    if (newProduct.voucherNeeded <= 0 || newProduct.stockQuantity <= 0) {
+      setError('Voucher value and stock quantity must be greater than 0.');
+      return;
+    }
+
     const token = localStorage.getItem('token');
     const formData = new FormData();
     formData.append('name', newProduct.name);
@@ -50,20 +64,29 @@ const AdminInventory = () => {
       formData.append('productPicture', productPicture);
     }
 
-    fetch('http://localhost:3001/products', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts([...products, data]);
-        setNewProduct({ name: '', description: '', voucherNeeded: 0, stockQuantity: 0 });
-        setProductPicture(null);
-      })
-      .catch((err) => console.error(err));
+    try {
+      const response = await fetch('http://localhost:3001/products', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.msg || 'Error adding product');
+      }
+
+      const data = await response.json();
+      setProducts([...products, data]);
+      setNewProduct({ name: '', description: '', voucherNeeded: 0, stockQuantity: 0 });
+      setProductPicture(null);
+      setError('');
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    }
   };
 
   const handleEditProduct = (product) => {
@@ -144,7 +167,7 @@ const AdminInventory = () => {
                   <button className="edit-button" onClick={() => handleEditProduct(product)}>Edit</button>
                 </div>
                 <button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>
-                  <img src="C:/Users/sheng/Desktop/Hack4Good2025/client/src/assets/trash-can.png" alt="Delete" />
+                  Delete
                 </button>
               </li>
             ))}
@@ -208,54 +231,57 @@ const AdminInventory = () => {
         )}
         <section className="add-product-section">
           <h2>Add New Product</h2>
-          <label>
-            Product Name:
-            <input
-              type="text"
-              name="name"
-              value={newProduct.name}
-              onChange={handleInputChange}
-              placeholder="Product Name"
-            />
-          </label>
-          <label>
-            Description:
-            <input
-              type="text"
-              name="description"
-              value={newProduct.description}
-              onChange={handleInputChange}
-              placeholder="Product Description"
-            />
-          </label>
-          <label>
-            Voucher Needed:
-            <input
-              type="number"
-              name="voucherNeeded"
-              value={newProduct.voucherNeeded}
-              onChange={handleInputChange}
-              placeholder="Voucher Needed"
-            />
-          </label>
-          <label>
-            Stock Quantity:
-            <input
-              type="number"
-              name="stockQuantity"
-              value={newProduct.stockQuantity}
-              onChange={handleInputChange}
-              placeholder="Stock Quantity"
-            />
-          </label>
-          <label>
-            Product Picture:
-            <input
-              type="file"
-              onChange={handlePictureChange}
-            />
-          </label>
-          <button onClick={handleAddProduct}>Add Product</button>
+          <form onSubmit={handleAddProduct}>
+            <label>
+              Product Name:
+              <input
+                type="text"
+                name="name"
+                value={newProduct.name}
+                onChange={handleInputChange}
+                placeholder="Product Name"
+              />
+            </label>
+            <label>
+              Description:
+              <input
+                type="text"
+                name="description"
+                value={newProduct.description}
+                onChange={handleInputChange}
+                placeholder="Product Description"
+              />
+            </label>
+            <label>
+              Voucher Needed:
+              <input
+                type="number"
+                name="voucherNeeded"
+                value={newProduct.voucherNeeded}
+                onChange={handleInputChange}
+                placeholder="Voucher Needed"
+              />
+            </label>
+            <label>
+              Stock Quantity:
+              <input
+                type="number"
+                name="stockQuantity"
+                value={newProduct.stockQuantity}
+                onChange={handleInputChange}
+                placeholder="Stock Quantity"
+              />
+            </label>
+            <label>
+              Product Picture:
+              <input
+                type="file"
+                onChange={handlePictureChange}
+              />
+            </label>
+            {error && <p className="error-message">{error}</p>}
+            <button type="submit">Add Product</button>
+          </form>
         </section>
       </main>
     </div>
