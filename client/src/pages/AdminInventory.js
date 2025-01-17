@@ -151,6 +151,7 @@ const AdminInventory = () => {
         <div className="header-buttons">
           <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
         </div>
+        <h1 className='heading'>Inventory</h1>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
       <main className="admin-inventory-main">

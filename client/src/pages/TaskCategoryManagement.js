@@ -86,9 +86,9 @@ const TaskCategoryManagement = () => {
 
     return (
         <div className="task-category-management">
-            <header className="admin-header">
-                <h1>Task Category Management</h1>
+            <header className="common-header">
                 <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+                <h1>Task Category Management</h1>
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
             </header>
             <main className="task-category-main">

@@ -173,8 +173,9 @@ const AccountManagement = () => {
     return (
         <div className="account-management">
             <header className="admin-header">
-                <h1>Account Management</h1>
+
                 <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+                <h1>Account Management</h1>
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
             </header>
             <div className="tabs">
