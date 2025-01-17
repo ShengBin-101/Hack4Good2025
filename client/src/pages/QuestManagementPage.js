@@ -99,18 +99,22 @@ const QuestManagementPage = () => {
         <section className="quests-section">
           <h2>Active Quests</h2>
           <ul className="quest-list">
-            {quests.map((quest) => (
-              <li key={quest._id} className="quest-item">
-                <div className="quest-info">
-                  <h3>{quest.name}</h3>
-                  <p>{quest.description}</p>
-                  <p>Voucher Value: {quest.voucherValue}</p>
-                  <p>Cooldown: {quest.cooldown} minutes</p>
-                  <p>Status: {quest.status}</p>
-                </div>
-                <button className="delete-button" onClick={() => handleDeleteQuest(quest._id)}>Delete</button>
-              </li>
-            ))}
+            {quests.length > 0 ? (
+              quests.map((quest) => (
+                <li key={quest._id} className="quest-item">
+                  <div className="quest-info">
+                    <h3>{quest.name}</h3>
+                    <p>{quest.description}</p>
+                    <p>Voucher Value: {quest.voucherValue}</p>
+                    <p>Cooldown: {quest.cooldown} minutes</p>
+                    <p>Status: {quest.status}</p>
+                  </div>
+                  <button className="delete-button" onClick={() => handleDeleteQuest(quest._id)}>Delete</button>
+                </li>
+              ))
+            ) : (
+              <p>No quests available</p>
+            )}
           </ul>
         </section>
         <section className="add-quest-section">
