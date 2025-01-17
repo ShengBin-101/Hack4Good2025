@@ -82,7 +82,9 @@
   color: var(--text-color);
 }
 
-.profile-container {
+.profile-container,
+.tasks-container,
+.quests-container {
   max-height: 70vh;
   overflow-y: auto;
   padding: 20px;
@@ -93,7 +95,11 @@
 .profile-section h2,
 .goal-section h2,
 .available-tasks-section h2,
-.available-quests-section h2 {
+.pending-tasks-section h2,
+.approved-tasks-section h2,
+.available-quests-section h2,
+.pending-quests-section h2,
+.approved-quests-section h2 {
   color: var(--color-primary);
   /* Use primary color for section titles */
 }
@@ -137,7 +143,12 @@ button:hover {
 .profile-section,
 .goal-section,
 .available-tasks-section,
-.transaction-history-section {
+.pending-tasks-section,
+.approved-tasks-section,
+.transaction-history-section,
+.available-quests-section,
+.pending-quests-section,
+.approved-quests-section {
   margin-bottom: 20px;
   background-color: var(--section-background-secondary-color);
   /* Semi-transparent background */
@@ -176,12 +187,15 @@ button:hover {
 .task-item,
 .transaction-item,
 .quest-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: var(--item-background-color);
-  color: var(--item-text-color);
+  color: var (--item-text-color);
   /* Dark text color for better readability */
 }
 
@@ -195,7 +209,7 @@ button:hover {
   max-height: 70vh;
   overflow-y: auto;
   padding: 20px;
-  background-color: var (--section-background-secondary-color);
+  background-color: var(--section-background-secondary-color);
   border-radius: 10px;
 }
 
@@ -223,6 +237,30 @@ button:hover {
   color: var(--color-secondary);
 }
 
+.task-proof-picture,
+.quest-proof-picture {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  margin-top: 10px;
+}
+
+.task-item .task-info,
+.quest-item .quest-info {
+  flex: 1;
+}
+
+.task-item .task-details,
+.quest-item .quest-details {
+  text-align: left;
+}
+
+.task-item .task-meta,
+.quest-item .quest-meta {
+  text-align: right;
+  margin-left: 20px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
 
@@ -231,7 +269,11 @@ button:hover {
   .profile-section,
   .goal-section,
   .available-tasks-section,
-  .available-quests-section {
+  .pending-tasks-section,
+  .approved-tasks-section,
+  .available-quests-section,
+  .pending-quests-section,
+  .approved-quests-section {
     width: 90%;
   }
 

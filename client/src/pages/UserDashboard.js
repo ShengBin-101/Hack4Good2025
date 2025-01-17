@@ -7,6 +7,8 @@ const UserDashboard = () => {
   const [vouchers, setVoucherCount] = useState(0);
   const [goal, setGoal] = useState(0);
   const [taskCategories, setTaskCategories] = useState([]);
+  const [pendingTasks, setPendingTasks] = useState([]);
+  const [approvedTasks, setApprovedTasks] = useState([]);
   const [transactions, setTransactions] = useState([]);
   const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('profile');
@@ -40,6 +42,8 @@ const UserDashboard = () => {
     fetchUserTransactions();
     // Fetch task categories and quests
     fetchTaskCategories();
+    fetchPendingTasks();
+    fetchApprovedTasks();
     fetchQuests();
     fetchPendingQuestSubmissions();
     fetchApprovedQuestSubmissions();
@@ -66,6 +70,34 @@ const UserDashboard = () => {
       .then((res) => res.json())
       .then((data) => setTaskCategories(data))
       .catch((err) => console.error('Error fetching task categories:', err));
+  };
+
+  const fetchPendingTasks = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/tasks/${user._id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setPendingTasks(data.filter(task => task.status === 'pending')))
+      .catch((err) => console.error('Error fetching pending tasks:', err));
+  };
+
+  const fetchApprovedTasks = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/tasks/${user._id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setApprovedTasks(data.filter(task => task.status === 'approved')))
+      .catch((err) => console.error('Error fetching approved tasks:', err));
   };
 
   const fetchUserTransactions = () => {
@@ -141,7 +173,24 @@ const UserDashboard = () => {
     navigate('/quest-submission', { state: { selectedQuest: quest } });
   };
 
-  const handleDeleteSubmission = (submissionId) => {
+  const handleDeleteTaskSubmission = (taskId) => {
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        fetchPendingTasks(); // Refresh the pending task submissions list
+      })
+      .catch((err) => console.error('Error deleting task submission:', err));
+  };
+
+  const handleDeleteQuestSubmission = (submissionId) => {
     const token = localStorage.getItem('token');
     fetch(`http://localhost:3001/quest-submissions/pending/${submissionId}`, {
       method: 'DELETE',
@@ -184,6 +233,12 @@ const UserDashboard = () => {
         >
           Quests
         </button>
+        <button
+          className={`tab-button ${activeTab === 'tasks' ? 'active' : ''}`}
+          onClick={() => setActiveTab('tasks')}
+        >
+          Tasks
+        </button>
       </div>
       {activeTab === 'profile' && (
         <div className="profile-container">
@@ -205,29 +260,6 @@ const UserDashboard = () => {
               className="goal-slider"
             />
             <p>Goal: {goal} vouchers</p>
-          </div>
-          <div className="available-tasks-section">
-            <h2>Available Task Categories</h2>
-            <div className="tasks-list-container">
-              {taskCategories.length > 0 ? (
-                <ul className="tasks-list">
-                  {taskCategories.map((category) => (
-                    <li
-                      key={category._id}
-                      className="task-item"
-                      onClick={() => handleTaskClick(category)} // Attach click handler
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <h3>{category.name}</h3>
-                      <p>{category.description}</p>
-                      <p>Voucher Value: {category.voucherValue}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No task categories available at the moment.</p>
-              )}
-            </div>
           </div>
         </div>
       )}
@@ -265,10 +297,16 @@ const UserDashboard = () => {
                       onClick={() => handleQuestClick(quest)}
                       style={{ cursor: 'pointer' }}
                     >
-                      <h3>{quest.name}</h3>
-                      <p>{quest.description}</p>
-                      <p>Voucher Value: {quest.voucherValue}</p>
-                      <p>Cooldown: {quest.cooldown} minutes</p>
+                      <div className="quest-info">
+                        <div className="quest-details">
+                          <h3>{quest.name}</h3>
+                          <p>{quest.description}</p>
+                        </div>
+                        <div className="quest-meta">
+                          <p>Voucher Value: {quest.voucherValue}</p>
+                          <p>Cooldown: {quest.cooldown} minutes</p>
+                        </div>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -291,7 +329,7 @@ const UserDashboard = () => {
                           <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
                         )}
                       </div>
-                      <button className="delete-button" onClick={() => handleDeleteSubmission(submission._id)}>Delete</button>
+                      <button className="delete-button" onClick={() => handleDeleteQuestSubmission(submission._id)}>Delete</button>
                     </li>
                   ))}
                 </ul>
@@ -319,6 +357,84 @@ const UserDashboard = () => {
                 </ul>
               ) : (
                 <p>No approved quests found.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+      {activeTab === 'tasks' && (
+        <div className="tasks-container">
+          <div className="available-tasks-section">
+            <h2>Available Task Categories</h2>
+            <div className="tasks-list-container">
+              {taskCategories.length > 0 ? (
+                <ul className="tasks-list">
+                  {taskCategories.map((category) => (
+                    <li
+                      key={category._id}
+                      className="task-item"
+                      onClick={() => handleTaskClick(category)} // Attach click handler
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <div className="task-info">
+                        <div className="task-details">
+                          <h3>{category.name}</h3>
+                          <p>{category.description}</p>
+                        </div>
+                        <div className="task-meta">
+                          <p>Voucher Value: {category.voucherValue}</p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No task categories available at the moment.</p>
+              )}
+            </div>
+          </div>
+          <div className="pending-tasks-section">
+            <h2>Pending Tasks</h2>
+            <div className="tasks-list-container">
+              {pendingTasks.length > 0 ? (
+                <ul className="tasks-list">
+                  {pendingTasks.map((task) => (
+                    <li key={task._id} className="task-item">
+                      <div className="task-submission-info">
+                        <h3>{task.taskDescription}</h3>
+                        <p>Status: {task.status}</p>
+                        {task.taskPicturePath && (
+                          <img src={`http://localhost:3001/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
+                        )}
+                      </div>
+                      <button className="delete-button" onClick={() => handleDeleteTaskSubmission(task._id)}>Delete</button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No pending tasks found.</p>
+              )}
+            </div>
+          </div>
+          <div className="approved-tasks-section">
+            <h2>Approved Tasks</h2>
+            <div className="tasks-list-container">
+              {approvedTasks.length > 0 ? (
+                <ul className="tasks-list">
+                  {approvedTasks.map((task) => (
+                    <li key={task._id} className="task-item">
+                      <div className="task-submission-info">
+                        <h3>{task.taskDescription}</h3>
+                        <p>Status: {task.status}</p>
+                        {task.taskPicturePath && (
+                          <img src={`http://localhost:3001/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No approved tasks found.</p>
               )}
             </div>
           </div>
