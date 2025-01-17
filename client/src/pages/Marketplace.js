@@ -129,8 +129,8 @@ const Marketplace = () => {
       <header className="marketplace-header">
         <h1>Marketplace</h1>
         <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
-        <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
-        <button className="nav-button" onClick={() => navigate('/view-tasks')}>View Tasks</button>
+        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'quests' } })}>Quests</button>
+        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'tasks' } })}>Tasks</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
         <p>Voucher Count: {voucherCount}</p> {/* Display voucher count */}
       </header>
