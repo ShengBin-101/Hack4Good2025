@@ -148,7 +148,7 @@ const UserDashboard = () => {
         </button>
       </div>
       {activeTab === 'profile' && (
-        <>
+        <div className="profile-container">
           <div className="profile-section">
             <h2>Profile</h2>
             <img src={profilePicture} alt="Profile" className="profile-picture" />
@@ -191,7 +191,7 @@ const UserDashboard = () => {
               )}
             </div>
           </div>
-        </>
+        </div>
       )}
       {activeTab === 'transactionHistory' && (
         <div className="transaction-history-section">
