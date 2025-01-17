@@ -16,5 +16,5 @@ server/node_modules
 .env*
 
 # uploaded images
-server/public/assets/*
+# server/public/assets/*
 
