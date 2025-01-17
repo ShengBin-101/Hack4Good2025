@@ -27,17 +27,20 @@ const UserDashboard = () => {
 
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
-      setProfilePicture(user.profilePicture);
-      setVoucherCount(user.vouchers);
+      setProfilePicture(
+        user.userPicturePath
+          ? `http://localhost:3001/assets/${user.userPicturePath}` // Full URL for profile picture
+          : require('../assets/default-image-url.jpg') // Default image
+      );
+      setVoucherCount(user.vouchers || 0);
       setGoal(user.goal || 0);
-      setUserName(user.name); // Set the user's name
+      setUserName(user.name || 'Guest'); // Set the user's name
     } else {
+      setProfilePicture(require('../assets/default-image-url.jpg')); // Default image
       setVoucherCount(0);
     }
 
     fetchVoucherCountFromLocalStorage();
-
-    setProfilePicture(user.profilePicture);
 
     fetchUserTransactions();
     // Fetch task categories and quests
@@ -244,9 +247,12 @@ const UserDashboard = () => {
         <div className="profile-container">
           <div className="profile-section">
             <h2>Profile</h2>
-            {profilePicture && (
-              <img src={profilePicture} alt="Profile" className="profile-picture" />
-            )}
+            <img
+              src={profilePicture}
+              alt="Profile"
+              className="profile-picture"
+              style={{ width: '100px', height: '100px', borderRadius: '50%' }} // Smaller size and circular style
+            />
             <p>Name: {userName}</p> {/* Display the user's name */}
             <p>Vouchers: {vouchers}</p>
           </div>
