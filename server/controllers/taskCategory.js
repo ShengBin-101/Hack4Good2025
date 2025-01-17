@@ -19,3 +19,21 @@ export const getTaskCategories = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const deleteTaskCategory = async (req, res) => {
+    try {
+        const { categoryId } = req.params;
+
+        const category = await TaskCategory.findById(categoryId);
+
+        if (!category) {
+            return res.status(404).json({ msg: "Task category not found." });
+        }
+
+        await TaskCategory.findByIdAndDelete(categoryId);
+
+        res.status(200).json({ msg: "Task category has been deleted." });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

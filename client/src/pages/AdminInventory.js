@@ -126,9 +126,7 @@ const AdminInventory = () => {
     <div className="admin-inventory-container">
       <header className="common-header">
         <div className="header-buttons">
-          <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Admin Dashboard</button>
-          <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
-          <button className="nav-button" onClick={() => navigate('/view-tasks')}>View Tasks</button>
+          <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
         </div>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
