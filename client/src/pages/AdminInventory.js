@@ -154,25 +154,84 @@ const AdminInventory = () => {
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
       <main className="admin-inventory-main">
-        <section className="products-section">
-          <h2>Products</h2>
-          <ul className="product-list">
-            {products.map((product) => (
-              <li key={product._id} className="product-item">
-                <div className="product-info">
-                  <h3>{product.name}</h3>
-                  <p>{product.description}</p>
-                  <p>Voucher Needed: {product.voucherNeeded}</p>
-                  <p>Stock Quantity: {product.stockQuantity}</p>
-                  <button className="edit-button" onClick={() => handleEditProduct(product)}>Edit</button>
-                </div>
-                <button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>
+      <section className="products-section">
+        <h2>Products</h2>
+        <ul className="product-list" style={{ listStyle: 'none', padding: 0 }}>
+          {products.map((product) => (
+            <li
+              key={product._id}
+              className="product-item"
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start', // Align items to the top
+                marginBottom: '20px', // Space between product items
+                borderBottom: '1px solid #ccc', // Optional separator
+                paddingBottom: '10px',
+              }}
+            >
+              {/* Display product image */}
+              <img
+                src={`http://localhost:3001/assets/${product.productPicturePath}`}
+                alt={product.name}
+                style={{
+                  width: '150px',
+                  height: '150px',
+                  objectFit: 'cover',
+                  borderRadius: '10px', // Slight curve for edges
+                  marginRight: '20px', // Space between image and text
+                }}
+              />
+
+              {/* Product details */}
+              <div style={{ flex: 1 }}>
+                <h3 style={{ margin: '0 0 10px', textAlign: 'left' }}>{product.name}</h3>
+                <p style={{ margin: '0 0 5px', textAlign: 'left' }}>{product.description}</p>
+                <p style={{ margin: '0 0 5px', textAlign: 'left' }}>
+                  <strong>Vouchers Needed:</strong> {product.voucherNeeded}
+                </p>
+                <p style={{ margin: '0 0 10px', textAlign: 'left' }}>
+                  <strong>Stock Quantity:</strong> {product.stockQuantity}
+                </p>
+              </div>
+
+              {/* Buttons */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginLeft: '20px' }}>
+                <button
+                  className="edit-button"
+                  onClick={() => handleEditProduct(product)}
+                  style={{
+                    padding: '5px 10px',
+                    background: '#007bff',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteProduct(product._id)}
+                  style={{
+                    padding: '5px 10px',
+                    background: '#dc3545',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    textAlign: 'center',
+                  }}
+                >
                   Delete
                 </button>
-              </li>
-            ))}
-          </ul>
-        </section>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
         {editingProduct && (
           <div className="edit-popup">
             <div className="edit-popup-content">
