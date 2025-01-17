@@ -110,6 +110,7 @@ const AccountManagement = () => {
     };
 
     const handleRegisterAdmin = () => {
+        setActiveTab('register');
         setViewMode('register');
     };
 
@@ -194,7 +195,7 @@ const AccountManagement = () => {
                 >
                     Existing Users
                 </button>
-                <button className="register-admin-button" onClick={handleRegisterAdmin}>Register Admin</button>
+                <button className={`tab-button ${activeTab === 'register' ? 'active' : ''}`} onClick={handleRegisterAdmin}>Register Admin</button>
             </div>
             {viewMode === 'users' && activeTab === 'pending' && (
                 <table>
