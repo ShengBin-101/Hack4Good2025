@@ -84,9 +84,9 @@ const QuestManagementPage = () => {
 
   return (
     <div className="quest-management">
-      <header className="admin-header">
-        <h1>Quest Management</h1>
+      <header className="common-header">
         <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+        <h1>Quest Management</h1>
         <button className="nav-button" onClick={() => navigate('/quest-approval')}>Quest Approval</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>

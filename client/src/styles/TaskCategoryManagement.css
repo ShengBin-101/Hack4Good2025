@@ -1,4 +1,5 @@
 @import './Colors.css';
+@import './Common.css'; 
 
 .task-category-management {
     font-family: Arial, sans-serif;
@@ -7,7 +8,7 @@
     text-align: center;
 }
 
-.admin-header {
+/* .admin-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -20,7 +21,7 @@
 
 .admin-header h1 {
     margin: 0;
-}
+} */
 
 .nav-button {
     background-color: var(--color-secondary);

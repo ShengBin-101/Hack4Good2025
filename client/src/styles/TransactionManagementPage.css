@@ -1,3 +1,4 @@
+@import './Colors.css';
 .transaction-management {
   padding: 20px;
 }
@@ -15,9 +16,15 @@
 }
 
 .transaction-main {
-  margin-top: 20px;
-  max-height: calc(100vh - 150px); /* Adjust based on header and padding */
+  margin: 20px;
+  height: 40vw;
+  
+  /* max-height: calc(100vh - 150px); Adjust based on header and padding */
   overflow-y: auto;
+  background-color:  rgba(224, 240, 238, 0.932);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
 }
 
 .transactions-section {

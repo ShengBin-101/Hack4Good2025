@@ -65,9 +65,9 @@ const TransactionManagementPage = () => {
 
   return (
     <div className="transaction-management">
-      <header className="admin-header">
-        <h1>Transaction Management</h1>
+      <header className="common-header">
         <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+        <h1>Transaction Management</h1>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
       <main className="transaction-main">

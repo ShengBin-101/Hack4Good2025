@@ -55,8 +55,8 @@ export const register = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "hacks4goood@gmail.com",
-                pass: "mvln zxrp rgpl svrm", // TO CHANGE TEMPORARY PASSWORD AND MOVE INTO ENV
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD,
             },
         });
 
@@ -129,8 +129,8 @@ export const registerAdmin = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "hacks4goood@gmail.com",
-                pass: "mvln zxrp rgpl svrm", // TO CHANGE TEMPORARY PASSWORD AND MOVE INTO ENV
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD,
             },
         });
 
@@ -226,8 +226,8 @@ export const forgotPassword = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "hacks4goood@gmail.com",
-                pass: "mvln zxrp rgpl svrm",
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD,
             },
         });
 
