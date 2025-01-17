@@ -29,7 +29,7 @@ const UserDashboard = () => {
     if (user) {
       setProfilePicture(
         user.userPicturePath
-          ? `http://localhost:3001/assets/${user.userPicturePath}` // Full URL for profile picture
+          ? `${process.env.REACT_APP_BACKEND_BASEURL}/assets/${user.userPicturePath}` // Full URL for profile picture
           : require('../assets/default-image-url.jpg') // Default image
       );
       setVoucherCount(user.voucher || 0);
@@ -51,7 +51,7 @@ const UserDashboard = () => {
 
   const fetchTaskCategories = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/task-categories', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/task-categories`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -65,7 +65,7 @@ const UserDashboard = () => {
   const fetchPendingTasks = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/tasks/${user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks/${user._id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -79,7 +79,7 @@ const UserDashboard = () => {
   const fetchApprovedTasks = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/tasks/${user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks/${user._id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -93,7 +93,7 @@ const UserDashboard = () => {
   const fetchUserTransactions = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/transactions/user/${user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/transactions/user/${user._id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -106,7 +106,7 @@ const UserDashboard = () => {
 
   const fetchQuests = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/quests', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quests`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -120,7 +120,7 @@ const UserDashboard = () => {
   const fetchPendingQuestSubmissions = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quest-submissions/${user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions/${user._id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -134,7 +134,7 @@ const UserDashboard = () => {
   const fetchApprovedQuestSubmissions = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quest-submissions/${user._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions/${user._id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -165,7 +165,7 @@ const UserDashboard = () => {
 
   const handleDeleteTaskSubmission = (taskId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/tasks/${taskId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks/${taskId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ const UserDashboard = () => {
 
   const handleDeleteQuestSubmission = (submissionId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quest-submissions/pending/${submissionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions/pending/${submissionId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -323,7 +323,7 @@ const UserDashboard = () => {
                         <h3>{submission.questId?.name}</h3>
                         <p>Status: {submission.status}</p>
                         {submission.proofImagePath && (
-                          <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
+                          <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
                         )}
                       </div>
                       <button className="delete-button" onClick={() => handleDeleteQuestSubmission(submission._id)}>Delete</button>
@@ -346,7 +346,7 @@ const UserDashboard = () => {
                         <h3>{submission.questId?.name}</h3>
                         <p>Status: {submission.status}</p>
                         {submission.proofImagePath && (
-                          <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
+                          <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
                         )}
                       </div>
                     </li>
@@ -401,7 +401,7 @@ const UserDashboard = () => {
                         <h3>{task.taskDescription}</h3>
                         <p>Status: {task.status}</p>
                         {task.taskPicturePath && (
-                          <img src={`http://localhost:3001/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
+                          <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
                         )}
                       </div>
                       <button className="delete-button" onClick={() => handleDeleteTaskSubmission(task._id)}>Delete</button>
@@ -424,7 +424,7 @@ const UserDashboard = () => {
                         <h3>{task.taskDescription}</h3>
                         <p>Status: {task.status}</p>
                         {task.taskPicturePath && (
-                          <img src={`http://localhost:3001/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
+                          <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-proof-picture" />
                         )}
                       </div>
                     </li>

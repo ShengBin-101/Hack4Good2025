@@ -25,7 +25,7 @@ const QuestSubmissionPage = () => {
         formData.append('proofImage', proofImage);
 
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/quest-submissions', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`

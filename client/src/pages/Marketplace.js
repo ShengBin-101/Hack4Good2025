@@ -14,7 +14,7 @@ const MarketPlace = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3001/products', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/products`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -68,7 +68,7 @@ const MarketPlace = () => {
 
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
-    const response = await fetch('http://localhost:3001/transactions', {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ const MarketPlace = () => {
                 }}
               >
                 <img
-                  src={`http://localhost:3001/assets/${product.productPicturePath}`}
+                  src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${product.productPicturePath}`}
                   alt={product.name}
                   style={{
                     width: '150px',

@@ -14,7 +14,7 @@ const TaskCategoryManagement = () => {
 
     const fetchTaskCategories = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/task-categories', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/task-categories`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -45,7 +45,7 @@ const TaskCategoryManagement = () => {
         }
 
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/task-categories', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/task-categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const TaskCategoryManagement = () => {
 
     const handleDeleteCategory = (categoryId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/task-categories/${categoryId}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/task-categories/${categoryId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

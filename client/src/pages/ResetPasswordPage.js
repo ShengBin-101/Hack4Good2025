@@ -20,7 +20,7 @@ const ResetPasswordPage = () => {
             setError('Passwords do not match');
             return;
         }
-        fetch('http://localhost:3001/auth/reset-password', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/auth/reset-password`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, token, password }),

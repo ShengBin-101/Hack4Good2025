@@ -14,7 +14,7 @@ const AdminInventory = () => {
   useEffect(() => {
     // Fetch products
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/products', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/products`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -65,7 +65,7 @@ const AdminInventory = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/products', {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/products`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -104,7 +104,7 @@ const AdminInventory = () => {
       formData.append('productPicture', editingProductPicture);
     }
 
-    fetch(`http://localhost:3001/products/${editingProduct._id}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/products/${editingProduct._id}`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -122,7 +122,7 @@ const AdminInventory = () => {
 
   const handleDeleteProduct = (productId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/products/${productId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/products/${productId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -171,7 +171,7 @@ const AdminInventory = () => {
             >
               {/* Display product image */}
               <img
-                src={`http://localhost:3001/assets/${product.productPicturePath}`}
+                src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${product.productPicturePath}`}
                 alt={product.name}
                 style={{
                   width: '150px',

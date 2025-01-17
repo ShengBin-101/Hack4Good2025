@@ -12,7 +12,7 @@ const AdminTaskManagement = () => {
 
     const fetchAllTasks = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/tasks', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -25,7 +25,7 @@ const AdminTaskManagement = () => {
 
     const handleApproveTask = (taskId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/tasks/${taskId}/approve`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks/${taskId}/approve`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ const AdminTaskManagement = () => {
 
     const handleRejectTask = (taskId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/tasks/${taskId}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks/${taskId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ const AdminTaskManagement = () => {
                                     <p>Date Completed: {new Date(task.dateCompleted).toLocaleDateString()}</p>
                                     <p>Status: {task.status}</p>
                                     {task.taskPicturePath && (
-                                        <img src={`http://localhost:3001/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-picture" />
+                                        <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${task.taskPicturePath}`} alt="Task Proof" className="task-picture" />
                                     )}
                                 </div>
                                 <div className="task-actions">

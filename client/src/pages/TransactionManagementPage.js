@@ -12,7 +12,7 @@ const TransactionManagementPage = () => {
 
   const fetchTransactions = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/transactions', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/transactions`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -25,7 +25,7 @@ const TransactionManagementPage = () => {
 
   const handleApproveTransaction = (transactionId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/transactions/${transactionId}/approve`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/transactions/${transactionId}/approve`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const TransactionManagementPage = () => {
 
   const handleRejectTransaction = (transactionId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/transactions/${transactionId}/reject`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/transactions/${transactionId}/reject`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
