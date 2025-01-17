@@ -4,28 +4,9 @@ import '../styles/QuestSubmissionPage.css';
 
 const QuestSubmissionPage = () => {
     const [proofImage, setProofImage] = useState(null);
-    const [questSubmissions, setQuestSubmissions] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
     const { selectedQuest } = location.state;
-
-    useEffect(() => {
-        fetchUserQuestSubmissions();
-    }, []);
-
-    const fetchUserQuestSubmissions = () => {
-        const user = JSON.parse(localStorage.getItem('user'));
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/quest-submissions/${user._id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((res) => res.json())
-            .then((data) => setQuestSubmissions(data))
-            .catch((err) => console.error('Error fetching quest submissions:', err));
-    };
 
     const handleProofImageChange = (e) => {
         setProofImage(e.target.files[0]);
@@ -54,26 +35,9 @@ const QuestSubmissionPage = () => {
             .then((res) => res.json())
             .then((data) => {
                 console.log(data);
-                fetchUserQuestSubmissions(); // Refresh the quest submissions list
+                navigate('/user-dashboard', { state: { activeTab: 'quests' } }); // Navigate back to the quest tab
             })
             .catch((err) => console.error('Error submitting quest:', err));
-    };
-
-    const handleDeleteSubmission = (submissionId) => {
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/quest-submissions/pending/${submissionId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                fetchUserQuestSubmissions(); // Refresh the quest submissions list
-            })
-            .catch((err) => console.error('Error deleting quest submission:', err));
     };
 
     const handleLogout = () => {
@@ -99,25 +63,6 @@ const QuestSubmissionPage = () => {
                         <input type="file" accept="image/*" onChange={handleProofImageChange} />
                         <button type="submit">Submit Quest</button>
                     </form>
-                </section>
-                <section className="quest-submissions-section">
-                    <h2>Your Quest Submissions</h2>
-                    <ul className="quest-submission-list">
-                        {questSubmissions.map((submission) => (
-                            <li key={submission._id} className="quest-submission-item">
-                                <div className="quest-submission-info">
-                                    <h3>{submission.questId.name}</h3>
-                                    <p>Status: {submission.status}</p>
-                                    {submission.proofImagePath && (
-                                        <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
-                                    )}
-                                </div>
-                                {submission.status === 'pending' && (
-                                    <button className="delete-button" onClick={() => handleDeleteSubmission(submission._id)}>Delete</button>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
                 </section>
             </main>
         </div>

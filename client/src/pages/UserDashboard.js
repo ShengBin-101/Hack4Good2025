@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/UserDashboard.css';
 
 const UserDashboard = () => {
@@ -11,10 +11,16 @@ const UserDashboard = () => {
   const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('profile');
   const [quests, setQuests] = useState([]);
-  const [pendingQuestIds, setPendingQuestIds] = useState([]);
+  const [pendingQuests, setPendingQuests] = useState([]);
+  const [approvedQuests, setApprovedQuests] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
+    if (location.state && location.state.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+
     window.scrollTo(0, 0);
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -36,7 +42,8 @@ const UserDashboard = () => {
     fetchTaskCategories();
     fetchQuests();
     fetchPendingQuestSubmissions();
-  }, []);
+    fetchApprovedQuestSubmissions();
+  }, [location.state]);
 
   const fetchVoucherCountFromLocalStorage = () => {
     const user = localStorage.getItem('user'); // Retrieve user object
@@ -98,8 +105,22 @@ const UserDashboard = () => {
       }
     })
       .then((res) => res.json())
-      .then((data) => setPendingQuestIds(data.filter(submission => submission.status === 'pending').map(submission => submission.questId._id)))
+      .then((data) => setPendingQuests(data.filter(submission => submission.status === 'pending')))
       .catch((err) => console.error('Error fetching pending quest submissions:', err));
+  };
+
+  const fetchApprovedQuestSubmissions = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/quest-submissions/${user._id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => setApprovedQuests(data.filter(submission => submission.status === 'approved')))
+      .catch((err) => console.error('Error fetching approved quest submissions:', err));
   };
 
   const handleLogout = () => {
@@ -118,6 +139,23 @@ const UserDashboard = () => {
 
   const handleQuestClick = (quest) => {
     navigate('/quest-submission', { state: { selectedQuest: quest } });
+  };
+
+  const handleDeleteSubmission = (submissionId) => {
+    const token = localStorage.getItem('token');
+    fetch(`http://localhost:3001/quest-submissions/pending/${submissionId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        fetchPendingQuestSubmissions(); // Refresh the pending quest submissions list
+      })
+      .catch((err) => console.error('Error deleting quest submission:', err));
   };
 
   return (
@@ -214,28 +252,75 @@ const UserDashboard = () => {
         </div>
       )}
       {activeTab === 'quests' && (
-        <div className="available-quests-section">
-          <h2>Available Quests</h2>
-          <div className="quests-list-container">
-            {quests.length > 0 ? (
-              <ul className="quests-list">
-                {quests.filter(quest => !pendingQuestIds.includes(quest._id)).map((quest) => (
-                  <li
-                    key={quest._id}
-                    className="quest-item"
-                    onClick={() => handleQuestClick(quest)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <h3>{quest.name}</h3>
-                    <p>{quest.description}</p>
-                    <p>Voucher Value: {quest.voucherValue}</p>
-                    <p>Cooldown: {quest.cooldown} minutes</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No quests available at the moment.</p>
-            )}
+        <div className="quests-container">
+          <div className="available-quests-section">
+            <h2>Available Quests</h2>
+            <div className="quests-list-container">
+              {quests.length > 0 ? (
+                <ul className="quests-list">
+                  {quests.filter(quest => !pendingQuests.includes(quest._id)).map((quest) => (
+                    <li
+                      key={quest._id}
+                      className="quest-item"
+                      onClick={() => handleQuestClick(quest)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <h3>{quest.name}</h3>
+                      <p>{quest.description}</p>
+                      <p>Voucher Value: {quest.voucherValue}</p>
+                      <p>Cooldown: {quest.cooldown} minutes</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No quests available at the moment.</p>
+              )}
+            </div>
+          </div>
+          <div className="pending-quests-section">
+            <h2>Pending Quests</h2>
+            <div className="quests-list-container">
+              {pendingQuests.length > 0 ? (
+                <ul className="quests-list">
+                  {pendingQuests.map((submission) => (
+                    <li key={submission._id} className="quest-item">
+                      <div className="quest-submission-info">
+                        <h3>{submission.questId.name}</h3>
+                        <p>Status: {submission.status}</p>
+                        {submission.proofImagePath && (
+                          <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
+                        )}
+                      </div>
+                      <button className="delete-button" onClick={() => handleDeleteSubmission(submission._id)}>Delete</button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No pending quests found.</p>
+              )}
+            </div>
+          </div>
+          <div className="approved-quests-section">
+            <h2>Approved Quests</h2>
+            <div className="quests-list-container">
+              {approvedQuests.length > 0 ? (
+                <ul className="quests-list">
+                  {approvedQuests.map((submission) => (
+                    <li key={submission._id} className="quest-item">
+                      <div className="quest-submission-info">
+                        <h3>{submission.questId.name}</h3>
+                        <p>Status: {submission.status}</p>
+                        {submission.proofImagePath && (
+                          <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No approved quests found.</p>
+              )}
+            </div>
           </div>
         </div>
       )}
