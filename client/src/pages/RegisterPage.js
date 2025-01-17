@@ -42,7 +42,7 @@ function RegisterPage() {
 
             const data = await response.json();
             console.log(data);
-            navigate('/verify-otp?userId=${data._id}');
+            navigate(`/verify-otp?userId=${data._id}`);
         } catch (err) {
             console.error(err);
             setError(err.message);
@@ -78,21 +78,14 @@ function RegisterPage() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <label>Profile Picture (Optional):</label>
-                <div className="file-input-container">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        id="file-upload"
-                        onChange={(e) => setUserPicture(e.target.files[0])}
-                        hidden
-                    />
-                </div>
-                <div className="button-container">
-                    <button type="submit">Register</button>
-                    <button type="button" onClick={() => navigate('/')}>Back to Login</button>
-                </div>
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setUserPicture(e.target.files[0])}
+                />
+                <button type="submit">Register</button>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
             </form>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
 }

@@ -97,11 +97,12 @@ const MarketPlace = () => {
       <header className="marketplace-header">
         <div className="voucher-count">Vouchers: {voucherCount}</div>
         <div className="header-buttons">
-          <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
-          <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
-          <button className="nav-button" onClick={() => navigate('/view-tasks')}>View Tasks</button>
-        </div>
+        <h1>Marketplace</h1>
+        <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Dashboard</button>
+        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'quests' } })}>Quests</button>
+        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'tasks' } })}>Tasks</button>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
+        </div>
       </header>
       <main className="marketplace-main">
         <section className="products-section">

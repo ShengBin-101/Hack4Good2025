@@ -76,9 +76,16 @@
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 50vw; /* 50% of the viewport width */
   margin: 20px auto; /* Center the div horizontally and add margin */
-  text-align: center; /* Center the text */
+  width: 80vw; /*50vw*/
+  /* 80% of the viewport width */
+  height: 70vh;
+  /* 70% of the viewport height */
+  overflow-y: auto;
+  /* Add vertical scroll if content overflows */
+  margin: 20px auto;
+  /* Center the div horizontally */
+
 }
 
 .order-section h2 {
