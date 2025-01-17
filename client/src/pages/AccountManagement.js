@@ -18,7 +18,7 @@ const AccountManagement = () => {
 
     const fetchPendingUsers = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/admin/pending', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/admin/pending`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -38,7 +38,7 @@ const AccountManagement = () => {
 
     const fetchExistingUsers = () => {
         const token = localStorage.getItem('token');
-        fetch('http://localhost:3001/admin/existing', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/admin/existing`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
@@ -63,7 +63,7 @@ const AccountManagement = () => {
 
     const handleApprove = (userId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/admin/approve/${userId}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/admin/approve/${userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ const AccountManagement = () => {
 
     const handleReject = (userId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/admin/reject/${userId}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/admin/reject/${userId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const AccountManagement = () => {
 
     const handleDelete = (userId) => {
         const token = localStorage.getItem('token');
-        fetch(`http://localhost:3001/admin/delete/${userId}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/admin/delete/${userId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -134,7 +134,7 @@ const AccountManagement = () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3001/auth/register-admin', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/auth/register-admin`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

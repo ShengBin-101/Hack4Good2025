@@ -11,7 +11,7 @@ function HomePage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    fetch('http://localhost:3001/auth/login', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),

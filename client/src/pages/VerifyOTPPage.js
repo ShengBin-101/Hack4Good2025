@@ -13,7 +13,7 @@ function VerifyOTPPage() {
 
     const handleVerifyOTP = (e) => {
         e.preventDefault();
-        fetch('http://localhost:3001/auth/verify-otp', {
+        fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/auth/verify-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId, otp }),

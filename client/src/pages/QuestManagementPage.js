@@ -14,7 +14,7 @@ const QuestManagementPage = () => {
 
   const fetchQuests = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/quests', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quests`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -43,7 +43,7 @@ const QuestManagementPage = () => {
     }
 
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/quests', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quests`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const QuestManagementPage = () => {
 
   const handleDeleteQuest = (questId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quests/${questId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quests/${questId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

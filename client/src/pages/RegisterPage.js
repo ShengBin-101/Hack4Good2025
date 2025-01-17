@@ -30,7 +30,7 @@ function RegisterPage() {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/auth/register', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/auth/register`, {
                 method: 'POST',
                 body: formData,
             });

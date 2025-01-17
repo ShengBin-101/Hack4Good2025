@@ -26,7 +26,7 @@ const TaskSubmission = () => {
 
   const fetchTaskCategories = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/task-categories', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/task-categories`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -60,7 +60,7 @@ const TaskSubmission = () => {
     formData.append('picture', taskPicture);
 
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/tasks', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/tasks`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`

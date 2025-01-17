@@ -12,7 +12,7 @@ const QuestApprovalPage = () => {
 
   const fetchQuestSubmissions = () => {
     const token = localStorage.getItem('token');
-    fetch('http://localhost:3001/quest-submissions', {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -25,7 +25,7 @@ const QuestApprovalPage = () => {
 
   const handleApproveSubmission = (submissionId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quest-submissions/${submissionId}/approve`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions/${submissionId}/approve`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ const QuestApprovalPage = () => {
 
   const handleRejectSubmission = (submissionId) => {
     const token = localStorage.getItem('token');
-    fetch(`http://localhost:3001/quest-submissions/${submissionId}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_BASEURL}/quest-submissions/${submissionId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const QuestApprovalPage = () => {
                   <p>User: {submission.userId.username}</p>
                   <p>Status: {submission.status}</p>
                   {submission.proofImagePath && (
-                    <img src={`http://localhost:3001/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
+                    <img src={`${process.env.REACT_APP_BACKEND_BASEURL}/assets/${submission.proofImagePath}`} alt="Quest Proof" className="quest-proof-picture" />
                   )}
                 </div>
                 <div className="quest-submission-actions">
