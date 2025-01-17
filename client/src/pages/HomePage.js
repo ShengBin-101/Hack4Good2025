@@ -48,7 +48,7 @@ function HomePage() {
   return (
     <div className="homepage">
       <img src={icon} alt="Icon" className="icon" /> {/* Add the icon */}
-      <div className="form-container">
+      <div className="login-form-container">
         <h1>Minimart</h1>
         <form onSubmit={handleLogin}>
           <label>Email:</label>
@@ -70,14 +70,10 @@ function HomePage() {
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <p>
           Don’t have an account?{' '}
-          <span style={{ color: 'blue', cursor: 'pointer' }}
-            onClick={() => navigate('/register')}>Register</span>
+          <span onClick={() => navigate('/register')}>Register</span>
         </p>
         <p>
-          <span
-            style={{ color: 'blue', cursor: 'pointer' }}
-            onClick={handleForgotPassword}
-          >
+          <span onClick={handleForgotPassword}>
             Forgot Password?
           </span>
         </p>

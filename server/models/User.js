@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profilePicturePath: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
       default: "pendingOTP", // new default

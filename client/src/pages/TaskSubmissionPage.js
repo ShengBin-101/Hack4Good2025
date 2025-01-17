@@ -70,7 +70,7 @@ const TaskSubmission = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        navigate('/user-dashboard');
+        navigate('/user-dashboard', { state: { activeTab: 'tasks' } }); // Navigate back to the tasks tab
       })
       .catch((err) => {
         console.error(err);

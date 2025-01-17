@@ -13,7 +13,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <header className="admin-header">
+      <header className="common-header">
         <h1>Admin Dashboard</h1>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>

@@ -1,4 +1,5 @@
 @import './Colors.css';
+@import './Common.css';
 
 .admin-dashboard {
   font-family: Arial, sans-serif;
@@ -7,51 +8,10 @@
   text-align: center;
 }
 
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--color-primary);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.admin-header h1 {
-  margin: 0;
-}
-
-.logout-button {
-  background-color: #f44336; /* Red color for logout */
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.logout-button:hover {
-  opacity: 0.8;
-}
-
 .admin-main {
-  background-color: white;
+  background-color: rgb(186, 216, 239);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.nav-button {
-  background-color: var(--color-primary);
-  border: none;
-  padding: 10px 20px;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  margin: 10px;
-}
-
-.nav-button:hover {
-  background-color: var(--color-secondary);
+  color: black;
 }
