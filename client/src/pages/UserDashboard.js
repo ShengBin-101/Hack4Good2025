@@ -32,7 +32,7 @@ const UserDashboard = () => {
           ? `http://localhost:3001/assets/${user.userPicturePath}` // Full URL for profile picture
           : require('../assets/default-image-url.jpg') // Default image
       );
-      setVoucherCount(user.vouchers || 0);
+      setVoucherCount(user.voucher || 0);
       setGoal(user.goal || 0);
       setUserName(user.name || 'Guest'); // Set the user's name
     } else {
@@ -232,16 +232,17 @@ const UserDashboard = () => {
       </div>
       {activeTab === 'profile' && (
         <div className="profile-container">
-          <div className="profile-section">
-            <h2>Profile</h2>
+          <div className="profile-section" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <img
               src={profilePicture}
               alt="Profile"
               className="profile-picture"
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }} // Smaller size and circular style
+              style={{ width: '100px', height: '100px', borderRadius: '50%' }} // Circular image style
             />
-            <p>Name: {userName}</p> {/* Display the user's name */}
-            <p>Vouchers: {vouchers}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+              <p style={{ margin: 0 }}>Name: {userName}</p> {/* Display the user's name */}
+              <p style={{ margin: 0 }}>Vouchers: {vouchers}</p>
+            </div>
           </div>
           <div className="goal-section">
             <h2>Set Your Goal</h2>
