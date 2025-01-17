@@ -79,6 +79,14 @@ const AdminTaskManagement = () => {
                             <li key={task._id} className="task-item">
                                 <div className="task-info">
                                     <h3>{task.taskDescription}</h3>
+                                    {task.userId ? (
+                                        <>
+                                            <p>Submitted by: {task.userId.name}</p>
+                                            <p>Email: {task.userId.email}</p>
+                                        </>
+                                    ) : (
+                                        <p>User information not available</p>
+                                    )}
                                     <p>Voucher Request: {task.voucherRequest}</p>
                                     <p>Date Completed: {new Date(task.dateCompleted).toLocaleDateString()}</p>
                                     <p>Status: {task.status}</p>

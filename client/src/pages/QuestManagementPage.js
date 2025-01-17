@@ -37,13 +37,8 @@ const QuestManagementPage = () => {
   };
 
   const handleAddQuest = () => {
-    if (newQuest.voucherValue === 0) {
-      setError('Voucher value must be greater than 0');
-      return;
-    }
-
-    if (newQuest.name.trim() === '') {
-      setError('Quest name is required');
+    if (newQuest.name.trim() === '' || newQuest.description.trim() === '' || newQuest.voucherValue <= 0 || newQuest.cooldown <= 0) {
+      setError('All fields must be filled and values must be greater than 0');
       return;
     }
 

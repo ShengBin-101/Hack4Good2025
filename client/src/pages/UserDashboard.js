@@ -28,16 +28,12 @@ const UserDashboard = () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
       setProfilePicture(user.profilePicture);
-      setVoucherCount(user.vouchers);
+      setVoucherCount(user.voucher || 0);
       setGoal(user.goal || 0);
       setUserName(user.name); // Set the user's name
     } else {
       setVoucherCount(0);
     }
-
-    fetchVoucherCountFromLocalStorage();
-
-    setProfilePicture(user.profilePicture);
 
     fetchUserTransactions();
     // Fetch task categories and quests
@@ -48,16 +44,6 @@ const UserDashboard = () => {
     fetchPendingQuestSubmissions();
     fetchApprovedQuestSubmissions();
   }, [location.state]);
-
-  const fetchVoucherCountFromLocalStorage = () => {
-    const user = localStorage.getItem('user'); // Retrieve user object
-    if (user) {
-      const parsedUser = JSON.parse(user); // Parse it to JSON
-      setVoucherCount(parsedUser.voucher || 0); // Set voucher count, default to 0
-    } else {
-      setVoucherCount(0); // Default to 0 if no user found
-    }
-  };
 
   const fetchTaskCategories = () => {
     const token = localStorage.getItem('token');
@@ -205,6 +191,13 @@ const UserDashboard = () => {
         fetchPendingQuestSubmissions(); // Refresh the pending quest submissions list
       })
       .catch((err) => console.error('Error deleting quest submission:', err));
+  };
+
+  const updateVoucherCount = (newVoucherCount) => {
+    setVoucherCount(newVoucherCount);
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.voucher = newVoucherCount;
+    localStorage.setItem('user', JSON.stringify(user));
   };
 
   return (

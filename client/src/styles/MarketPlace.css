@@ -2,36 +2,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
   background-color: var(--color-primary);
-  color: white;
-  border-radius: 8px;
+  border-radius: 10px;
+}
+
+.header-buttons {
+  display: flex;
+  align-items: center;
+}
+
+.header-buttons .nav-button {
+  margin-right: 10px;
+}
+
+.logout-button {
+  margin-left: auto;
 }
 
 .voucher-count {
   margin-right: auto; /* Pushes the voucher count to the left */
 }
 
-.header-buttons {
-  display: flex;
-  justify-content: center;
-  flex-grow: 1; /* Allows the buttons to take up the remaining space */
-}
-
 .header-buttons button {
   margin: 0 10px;
 }
 
-.logout-button {
-  margin-left: auto; /* Pushes the logout button to the right */
-  background-color: var(--color-secondary);
-  color: var(--text-color);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
 
 .logout-button:hover {
   background-color: var(--color-primary);
@@ -130,4 +126,9 @@
 .error-message {
   color: red;
   margin-bottom: 10px;
+}
+
+.marketplace-heading {
+  color: aliceblue;
+  margin-right: 20vw;
 }

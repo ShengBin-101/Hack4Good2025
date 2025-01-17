@@ -52,6 +52,11 @@ const MarketPlace = () => {
   };
 
   const handlePlaceOrder = async () => {
+    if (orderQuantity === 0) {
+      setError('Buying quantity must be at least 1.');
+      return;
+    }
+
     if (orderQuantity > selectedProduct.stockQuantity) {
       setError('Buying quantity is more than stock quantity.');
       return;
@@ -82,7 +87,13 @@ const MarketPlace = () => {
     if (response.ok) {
       const updatedProduct = await response.json();
       setProducts(products.map(product => product._id === updatedProduct._id ? updatedProduct : product));
-      setVoucherCount(voucherCount - (selectedProduct.voucherNeeded * orderQuantity));
+      const newVoucherCount = voucherCount - (selectedProduct.voucherNeeded * orderQuantity);
+      setVoucherCount(newVoucherCount);
+
+      // Update voucher count in local storage
+      const updatedUser = { ...user, voucher: newVoucherCount };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+
       setSelectedProduct(null);
       setOrderQuantity(1);
       setError(''); // Clear any previous errors
@@ -97,12 +108,12 @@ const MarketPlace = () => {
       <header className="marketplace-header">
         <div className="voucher-count">Vouchers: {voucherCount}</div>
         <div className="header-buttons">
-        <h1>Marketplace</h1>
-        <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Profile</button>
-        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'quests' } })}>Quests</button>
-        <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'tasks' } })}>Tasks</button>
-        <button className="logout-button" onClick={handleLogout}>Logout</button>
+          <h1 className='marketplace-heading'>Marketplace</h1>
+          <button className="nav-button" onClick={() => navigate('/user-dashboard')}>User Profile</button>
+          <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'quests' } })}>Quests</button>
+          <button className="nav-button" onClick={() => navigate('/user-dashboard', { state: { activeTab: 'tasks' } })}>Tasks</button>
         </div>
+        <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
       <main className="marketplace-main">
         <section className="products-section">
@@ -140,7 +151,6 @@ const MarketPlace = () => {
             <button onClick={() => setSelectedProduct(null)}>Cancel</button>
           </section>
         )}
-        {success && <p className="success-message">{success}</p>}
       </main>
     </div>
   );

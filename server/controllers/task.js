@@ -110,13 +110,12 @@ export const deleteTask = async (req, res) => {
 /* GET ALL TASKS (Admin) */
 export const getAllTasks = async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find().populate('userId', 'name email'); // Populate user details
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
 /* GET USER TASKS */
 export const getUserTasks = async (req, res) => {
   try {
@@ -127,3 +126,4 @@ export const getUserTasks = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

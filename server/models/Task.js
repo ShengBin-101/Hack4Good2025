@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Reference to the User model
       required: true,
       trim: true, // Removes extra spaces
     },
