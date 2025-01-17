@@ -271,6 +271,7 @@ const UserDashboard = () => {
                   <p>Date: {transaction.dateTransaction}</p>
                   <p>Time: {transaction.timeTransaction}</p>
                   <p>Vouchers Used: {transaction.voucherTransaction}</p>
+                  <p>Status: {transaction.status}</p> {/* Display the status */}
                 </li>
               ))}
             </ul>

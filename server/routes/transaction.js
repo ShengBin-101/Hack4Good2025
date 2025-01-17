@@ -3,6 +3,8 @@ import {
   createTransaction,
   getUserTransactions,
   getAllTransactions,
+  approveTransaction,
+  rejectTransaction,
 } from "../controllers/transaction.js";
 import { verifyToken, verifyAdmin } from "../middleware/auth.js";
 
@@ -15,6 +17,12 @@ router.post("/", verifyToken, createTransaction);
 router.get("/user/:userId", verifyToken, getUserTransactions);
 
 /* GET ALL TRANSACTIONS (Admin) */
-router.get("/",  verifyToken, verifyAdmin, getAllTransactions);
+router.get("/", verifyToken, verifyAdmin, getAllTransactions);
+
+/* APPROVE TRANSACTION */
+router.put("/:transactionId/approve", verifyToken, verifyAdmin, approveTransaction);
+
+/* REJECT TRANSACTION */
+router.delete("/:transactionId/reject", verifyToken, verifyAdmin, rejectTransaction);
 
 export default router;

@@ -29,6 +29,11 @@ const TransactionSchema = new mongoose.Schema(
       type: String, // Store time as a string (e.g., "14:30")
       required: true,
     },
+    status: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "approved", "rejected"],
+    },
   },
   { timestamps: true }
 );
