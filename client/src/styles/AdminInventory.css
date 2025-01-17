@@ -156,7 +156,8 @@
   border-radius: 4px;
   border: 1px solid var(--color-secondary);
   width: 10vw; /* Make the width of form fields uniform */
-  margin-bottom: 20px;
+  margin: 20px;
+  align-self: center;
 }
 
 .add-product-section button {
