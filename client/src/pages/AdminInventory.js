@@ -124,9 +124,12 @@ const AdminInventory = () => {
 
   return (
     <div className="admin-inventory-container">
-      <header className="admin-header">
-        <h1>Admin Inventory</h1>
-        <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Back to Dashboard</button>
+      <header className="common-header">
+        <div className="header-buttons">
+          <button className="nav-button" onClick={() => navigate('/admin-dashboard')}>Admin Dashboard</button>
+          <button className="nav-button" onClick={() => navigate('/task-submission')}>Submit Task</button>
+          <button className="nav-button" onClick={() => navigate('/view-tasks')}>View Tasks</button>
+        </div>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </header>
       <main className="admin-inventory-main">
@@ -140,10 +143,10 @@ const AdminInventory = () => {
                   <p>{product.description}</p>
                   <p>Voucher Needed: {product.voucherNeeded}</p>
                   <p>Stock Quantity: {product.stockQuantity}</p>
-                  <button onClick={() => handleEditProduct(product)}>Edit</button>
+                  <button className="edit-button" onClick={() => handleEditProduct(product)}>Edit</button>
                 </div>
                 <button className="delete-button" onClick={() => handleDeleteProduct(product._id)}>
-                  <img src="/path/to/trash-can-icon.png" alt="Delete" />
+                  <img src="C:/Users/sheng/Desktop/Hack4Good2025/client/src/assets/trash-can.png" alt="Delete" />
                 </button>
               </li>
             ))}

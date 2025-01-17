@@ -110,6 +110,7 @@ const AccountManagement = () => {
     };
 
     const handleRegisterAdmin = () => {
+        setActiveTab('register-admin');
         setViewMode('register');
     };
 
@@ -177,7 +178,7 @@ const AccountManagement = () => {
             </header>
             <div className="tabs">
                 <button
-                    className={`tab-button ${activeTab === 'pending' ? 'active' : ''}`}
+                    className={`tab-button ${activeTab === 'pending' ? 'active' : 'inactive'}`}
                     onClick={() => {
                         setActiveTab('pending');
                         setViewMode('users');
@@ -186,7 +187,7 @@ const AccountManagement = () => {
                     Users Waiting for Approval
                 </button>
                 <button
-                    className={`tab-button ${activeTab === 'existing' ? 'active' : ''}`}
+                    className={`tab-button ${activeTab === 'existing' ? 'active' : 'inactive'}`}
                     onClick={() => {
                         setActiveTab('existing');
                         setViewMode('users');
@@ -194,7 +195,7 @@ const AccountManagement = () => {
                 >
                     Existing Users
                 </button>
-                <button className="register-admin-button" onClick={handleRegisterAdmin}>Register Admin</button>
+                <button className={`tab-button ${activeTab === '' ? 'active' : 'inactive'}`}  onClick={handleRegisterAdmin}>Register Admin</button>
             </div>
             {viewMode === 'users' && activeTab === 'pending' && (
                 <table>
@@ -243,7 +244,7 @@ const AccountManagement = () => {
                     </tbody>
                 </table>
             )}
-            {viewMode === 'register' && (
+            {viewMode === 'register' && activeTab === 'register-admin' && (
                 <div className="form-container">
                     <h1>Register Admin</h1>
                     <form onSubmit={handleRegister}>
