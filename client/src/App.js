@@ -19,6 +19,8 @@ import AdminTaskManagement from './pages/AdminTaskManagement';
 import QuestManagementPage from './pages/QuestManagementPage';
 import QuestApprovalPage from './pages/QuestApprovalPage';
 import QuestSubmissionPage from './pages/QuestSubmissionPage';
+import TransactionManagementPage from './pages/TransactionManagementPage'; // Import the new page
+
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -44,6 +46,7 @@ const App = () => {
         <Route path="/quest-management" element={<ProtectedRoute adminOnly={true}><QuestManagementPage /></ProtectedRoute>} />
         <Route path="/quest-approval" element={<ProtectedRoute adminOnly={true}><QuestApprovalPage /></ProtectedRoute>} />
         <Route path="/quest-submission" element={<ProtectedRoute><QuestSubmissionPage /></ProtectedRoute>} />
+        <Route path="/transaction-management" element={<ProtectedRoute adminOnly={true}><TransactionManagementPage /></ProtectedRoute>} /> {/* New route */}
       </Routes>
     </Router>
   );

@@ -37,13 +37,3 @@ export const getVoucherCount = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-/* GET ALL TASKS (Admin) */
-export const getAllTasks = async (req, res) => {
-  try {
-    const tasks = await Task.find().populate('userId', 'name email'); // Populate user details
-    res.status(200).json(tasks);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
