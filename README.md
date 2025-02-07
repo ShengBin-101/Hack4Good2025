@@ -1,16 +1,57 @@
-# Hack4Good2025
+# Minimart and Voucher System for Muhammadiyah Welfare Home
 
-## Deployed using Vercel
+Team Gone4Good's submission for Hack4Good2025. (Backed up from https://github.com/ShengBin-101/Hack4Good2025, as the repository stopped working)
 
-https://hack4good2025-frontend.vercel.app/
+Prototype deployed on Vercel. Link: https://hack4-good2025-submission-frontend.vercel.app/
 
-## Getting started
+## Tech Stack
 
-After cloning the repo, run
+- Frontend: React, CSS
+- Backend: Node.js, Express
+- Database: MongoDB
+
+## Testing the Prototype as a User
+
+```
+Email: tester53322@gmail.com
+Password: tester
+```
+
+> [!IMPORTANT]
+> If you want to register your own account, the OTP will be sent to your email and in the SPAM folder. To enable the link in the email, you have to report the email as "Not Phishing".
+
+If you require Admin Actions such as register account, task approval and order approvals, you may contact me at shengbin.chan@gmail.com! 
+
+## Getting started for Development
+
+Requirements:
+- Make sure you have npm installed beforehand.
+
+1) Clone the Repo
+2) After cloning the repo, go to `path/to/Hack4Good2025-submission/` and run
 
 ```
 npm install
 ```
+
+3) Go to `path/to/Hack4Good2025-submission/client/` and run
+```
+npm install
+```
+4) Once Dependencies are installed, we can run the web app on `localhost:3000`
+
+Terminal 1: Start Front End
+```
+cd path/to/Hack4Good2025-submission/client/
+npm start
+```
+
+Terminal 2: Connect to Back End
+```
+cd path/to/Hack4Good2025-submission/server/
+nodemon index.js
+```
+
 
 # Feature Documentation
 
@@ -89,7 +130,6 @@ This document outlines the core features of the application, emphasizing user in
 - **Configuration**:
   - Uses Gmail as the email service.
   - Authentication credentials are securely managed.
-  - Sends email to users once their orders have been approved by admin. (Suited for larger items and preorders)
 
 ---
 
